@@ -1,0 +1,2 @@
+BuildAndTestPattern4Xpages
+==========================
