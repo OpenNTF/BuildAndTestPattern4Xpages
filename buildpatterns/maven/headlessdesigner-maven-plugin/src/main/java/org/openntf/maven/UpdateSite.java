@@ -1,5 +1,7 @@
 package org.openntf.maven;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 public class UpdateSite {
 
 	public UpdateSite() {
@@ -9,6 +11,7 @@ public class UpdateSite {
 	public String getPath() {
 		return m_Path;
 	}
+
 	public void setPath(String path) {
 		m_Path = path;
 	}
@@ -29,8 +32,11 @@ public class UpdateSite {
 		m_FeatureID = featureID;
 	}
 
+	@Parameter(property = "path")
 	private String m_Path;
+	@Parameter(property = "featureid")
 	private String m_FeatureID;
+	@Parameter(property = "version")
 	private String m_Version;
 
 }

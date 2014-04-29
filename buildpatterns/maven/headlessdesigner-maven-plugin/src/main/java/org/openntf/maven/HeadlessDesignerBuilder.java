@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +40,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	private File m_OutputDir;
 
 	@Parameter(property = "ddehd.updatesites")
-	private List<Map<String, String>> m_UpdateSites;
+	private List<UpdateSite> m_UpdateSites;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Starting DDE HeadlessDesigner Plugin");
