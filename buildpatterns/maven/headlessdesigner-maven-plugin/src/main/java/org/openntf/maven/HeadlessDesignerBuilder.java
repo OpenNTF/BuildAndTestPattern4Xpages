@@ -1,5 +1,14 @@
 package org.openntf.maven;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -10,9 +19,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.plexus.util.StringUtils;
 
-@Mojo(name = "ddehd", requiresDependencyResolution=ResolutionScope.COMPILE)
-@Execute(goal="compile", phase=LifecyclePhase.COMPILE)	
+@Mojo(name = "ddehd", requiresDependencyResolution = ResolutionScope.COMPILE)
+@Execute(goal = "compile", phase = LifecyclePhase.COMPILE)
 public class HeadlessDesignerBuilder extends AbstractMojo {
+	private final Pattern NOTESPATTERN = Pattern.compile("(notes2.exe.*? )");
 
 	@Parameter(property = "ddehd.designerexec", defaultValue = "designer.exe")
 	private String m_DesignerExec;
@@ -26,14 +36,19 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 
 	@Parameter(property = "ddehd.filename")
 	private String m_Filename;
+	@Parameter(defaultValue = "${project.build.outputDirectory}")
+	private File m_OutputDir;
 
-	
+	@Parameter(property = "ddehd.updatesite")
+	private List<UpdateSite> m_UpdateSites;
+
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Starting DDE HeadlessDesigner Plugin");
 		getLog().info("Designer Exec =" + m_DesignerExec);
 		getLog().info("Notes Data    =" + m_NotesData);
 		getLog().info("TargetDB Name =" + m_TargetDBName);
 		getLog().info("ODP           =" + m_ODPDirectory);
+		getLog().info("Updatesite    =" + m_UpdateSites);
 		if (StringUtils.isEmpty(m_NotesData) || StringUtils.isEmpty(m_TargetDBName) || StringUtils.isEmpty(m_ODPDirectory)) {
 			getLog().info("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata)");
 			throw new MojoExecutionException("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata, ddehd.odpdirectory)");
@@ -44,27 +59,56 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 
 		StringBuilder sbDesignerArgs = new StringBuilder("-Dcom.ibm.designer.cmd.file=\"");
 		/*
-		sbDesignerArgs.append("true,true,");
-		sbDesignerArgs.append(m_TargetDBName);
-		sbDesignerArgs.append(",");
-		sbDesignerArgs.append("importandbuild,");
-		sbDesignerArgs.append(m_ODPDirectory + "\\.project,");
-		sbDesignerArgs.append(m_TargetDBName);
-		*/
+		 * sbDesignerArgs.append("true,true,");
+		 * sbDesignerArgs.append(m_TargetDBName); sbDesignerArgs.append(",");
+		 * sbDesignerArgs.append("importandbuild,");
+		 * sbDesignerArgs.append(m_ODPDirectory + "\\.project,");
+		 * sbDesignerArgs.append(m_TargetDBName);
+		 */
 		sbDesignerArgs.append(m_Filename);
 		sbDesignerArgs.append("\"");
-	
-		getLog().info("Designer call = "+ sbDesignerArgs.toString());
-		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec,  "-RPARAMS","-console", "-vmargs", sbDesignerArgs.toString());
-		
+
+		getLog().info("Designer call = " + sbDesignerArgs.toString());
+		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, "-RPARAMS", "-console", "-vmargs", sbDesignerArgs.toString());
+
 		try {
-			//Process process = Runtime.getRuntime().exec(m_DesignerExec + " -console -RPARAMS -vmargs "+sbDesignerArgs.toString());
+			// Process process = Runtime.getRuntime().exec(m_DesignerExec +
+			// " -console -RPARAMS -vmargs "+sbDesignerArgs.toString());
 			Process process = pb.start();
 			int result = process.waitFor();
 			getLog().info("DDE HeadlessDesigner ended with: " + result);
+			boolean finished = false;
+			int nCounter = 0;
+			while (!finished || nCounter < 60) {
+				finished = checkIfNotesHasFinished();
+				nCounter++;
+			}
+			if (!finished) {
+				throw new MojoExecutionException("DDE HeadlessDesignerPlugin not finished in 60 sec timeout");
+
+			}
 		} catch (Exception ex) {
 			throw new MojoExecutionException("DDE HeadlessDesignerPlugin reports an error: ", ex);
 		}
+	}
+
+	private boolean checkIfNotesHasFinished() throws IOException, InterruptedException {
+
+		Process process = Runtime.getRuntime().exec("cmd.exe /c tasklist /fi \"IMAGENAME eq notes2.exe\"");
+		process.waitFor();
+		final InputStream is = process.getInputStream();
+		final InputStreamReader isr = new InputStreamReader(is);
+		final BufferedReader buff = new BufferedReader(isr);
+		String line = new String();
+		while ((line = buff.readLine()) != null) {
+			Matcher iMapSuccessMatcher = NOTESPATTERN.matcher(line);
+			if (iMapSuccessMatcher.find()) {
+				Thread.sleep(1000);
+				getLog().info("Waiting for Notes to complete building.");
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
