@@ -24,6 +24,10 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	@Parameter(property = "ddehd.odpdirectory")
 	private String m_ODPDirectory;
 
+	@Parameter(property = "ddehd.filename")
+	private String m_Filename;
+
+	
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Starting DDE HeadlessDesigner Plugin");
 		getLog().info("Designer Exec =" + m_DesignerExec);
@@ -38,14 +42,18 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		sbNotesData.append(m_NotesData);
 		sbNotesData.append("\\notes.ini");
 
-		StringBuilder sbDesignerArgs = new StringBuilder("-Dcom.ibm.designer.cmd=\"");
+		StringBuilder sbDesignerArgs = new StringBuilder("-Dcom.ibm.designer.cmd.file=\"");
+		/*
 		sbDesignerArgs.append("true,true,");
 		sbDesignerArgs.append(m_TargetDBName);
 		sbDesignerArgs.append(",");
 		sbDesignerArgs.append("importandbuild,");
 		sbDesignerArgs.append(m_ODPDirectory + "\\.project,");
 		sbDesignerArgs.append(m_TargetDBName);
+		*/
+		sbDesignerArgs.append(m_Filename);
 		sbDesignerArgs.append("\"");
+	
 		getLog().info("Designer call = "+ sbDesignerArgs.toString());
 		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec,  "-RPARAMS","-console", "-vmargs", sbDesignerArgs.toString());
 		
