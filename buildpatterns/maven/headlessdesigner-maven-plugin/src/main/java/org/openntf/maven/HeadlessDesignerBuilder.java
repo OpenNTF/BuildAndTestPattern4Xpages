@@ -47,9 +47,11 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		sbDesignerArgs.append(m_TargetDBName);
 		sbDesignerArgs.append("\"");
 		getLog().info("Designer call = "+ sbDesignerArgs.toString());
-		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, "-console", "-RPARAMS", "-vmargs", sbDesignerArgs.toString());
+		//ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, "-console", "-RPARAMS", "-vmargs", sbDesignerArgs.toString());
+		
 		try {
-			Process process = pb.start();
+			Process process = Runtime.getRuntime().exec(m_DesignerExec + " -console -RPARAMS -vmargs "+sbDesignerArgs.toString());
+			//Process process = pb.start();
 			int result = process.waitFor();
 			getLog().info("DDE HeadlessDesigner ended with: " + result);
 		} catch (Exception ex) {
