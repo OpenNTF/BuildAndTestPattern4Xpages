@@ -34,7 +34,7 @@ public class UpdateSite {
 
 	@Parameter(property = "path")
 	private String m_Path;
-	@Parameter(property = "featureid")
+	@Parameter(property = "featureID")
 	private String m_FeatureID;
 	@Parameter(property = "version")
 	private String m_Version;
