@@ -32,11 +32,11 @@ public class UpdateSite {
 		m_FeatureID = featureID;
 	}
 
-	@Parameter(property = "path")
+	@Parameter(property = "ddehd.path")
 	private String m_Path;
-	@Parameter(property = "featureID")
+	@Parameter(property = "ddehd.featureID")
 	private String m_FeatureID;
-	@Parameter(property = "version")
+	@Parameter(property = "ddehd.version")
 	private String m_Version;
 
 }
