@@ -3,11 +3,15 @@ package org.openntf.maven;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.plexus.util.StringUtils;
 
-@Mojo(name = "ddehd")
+@Mojo(name = "ddehd", requiresDependencyResolution=ResolutionScope.COMPILE)
+@Execute(goal="compile", phase=LifecyclePhase.COMPILE)	
 public class HeadlessDesignerBuilder extends AbstractMojo {
 
 	@Parameter(property = "ddehd.designerexec", defaultValue = "designer.exe")
@@ -25,6 +29,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		getLog().info("Designer Exec =" + m_DesignerExec);
 		getLog().info("Notes Data    =" + m_NotesData);
 		getLog().info("TargetDB Name =" + m_TargetDBName);
+		getLog().info("ODP           =" + m_ODPDirectory);
 		if (StringUtils.isEmpty(m_NotesData) || StringUtils.isEmpty(m_TargetDBName) || StringUtils.isEmpty(m_ODPDirectory)) {
 			getLog().info("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata)");
 			throw new MojoExecutionException("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata, ddehd.odpdirectory)");
@@ -40,7 +45,9 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		sbDesignerArgs.append("importandbuild,");
 		sbDesignerArgs.append(m_ODPDirectory + "\\.project,");
 		sbDesignerArgs.append(m_TargetDBName);
-		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, sbNotesData.toString(), "-RPARAMS", "-vmargs", sbDesignerArgs.toString());
+		sbDesignerArgs.append("\"");
+		getLog().info("Designer call = "+ sbDesignerArgs.toString());
+		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, sbNotesData.toString(),"-console", "-RPARAMS", "-vmargs", sbDesignerArgs.toString());
 		try {
 			Process process = pb.start();
 			int result = process.waitFor();
