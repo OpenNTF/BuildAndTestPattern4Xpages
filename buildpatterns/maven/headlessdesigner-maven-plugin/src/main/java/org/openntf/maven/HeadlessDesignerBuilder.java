@@ -39,8 +39,16 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File m_OutputDir;
 
-	@Parameter(property = "ddehd.updateSites")
+	@Parameter(property = "ddehd.updateSites", alias = "updateSites")
 	private List<UpdateSite> m_UpdateSites;
+
+	public List<UpdateSite> getUpdateSites() {
+		return m_UpdateSites;
+	}
+
+	public void setUpdateSites(List<UpdateSite> updateSites) {
+		m_UpdateSites = updateSites;
+	}
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Starting DDE HeadlessDesigner Plugin");
