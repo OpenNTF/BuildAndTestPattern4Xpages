@@ -12,17 +12,8 @@
 					<lifecycle>
 						<id>default</id>
 						<phases>
-							<process-resources>
-								org.apache.maven.plugins:maven-resources-plugin:resources
-							</process-resources>
-							<process-test-resources>
-								org.apache.maven.plugins:maven-resources-plugin:testResources
-							</process-test-resources>
-							<compile>
-								org.openntf.maven:headlessdesigner-maven-plugin:ddehd
-              				</compile>
 							<package>
-								org.openntf.maven:headlessdesigner-maven-plugin:nsf
+								org.openntf.maven:headlessdesigner-maven-plugin:ddehd
 							</package>
 						</phases>
 					</lifecycle>
