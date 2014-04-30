@@ -20,7 +20,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.plexus.util.StringUtils;
 
 @Mojo(name = "ddehd", requiresDependencyResolution = ResolutionScope.COMPILE)
-@Execute(goal = "compile", phase = LifecyclePhase.COMPILE)
+@Execute(goal = "ddehd", phase = LifecyclePhase.COMPILE)
 public class HeadlessDesignerBuilder extends AbstractMojo {
 	private final Pattern NOTESPATTERN = Pattern.compile("(notes2.exe.*? )");
 
@@ -40,13 +40,13 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	private File m_OutputDir;
 
 	@Parameter(property = "ddehd.updateSites", alias = "updateSites")
-	private List<String> m_UpdateSites;
+	private List<UpdateSite> m_UpdateSites;
 
-	public List<String> getUpdateSites() {
+	public List<UpdateSite> getUpdateSites() {
 		return m_UpdateSites;
 	}
 
-	public void setUpdateSites(List<String> updateSites) {
+	public void setUpdateSites(List<UpdateSite> updateSites) {
 		m_UpdateSites = updateSites;
 	}
 
