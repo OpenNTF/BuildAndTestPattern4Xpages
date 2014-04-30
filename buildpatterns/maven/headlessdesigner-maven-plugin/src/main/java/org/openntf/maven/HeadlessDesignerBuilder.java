@@ -40,13 +40,13 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	private File m_OutputDir;
 
 	@Parameter(property = "ddehd.updateSites", alias = "updateSites")
-	private List<UpdateSite> m_UpdateSites;
+	private List<String> m_UpdateSites;
 
-	public List<UpdateSite> getUpdateSites() {
+	public List<String> getUpdateSites() {
 		return m_UpdateSites;
 	}
 
-	public void setUpdateSites(List<UpdateSite> updateSites) {
+	public void setUpdateSites(List<String> updateSites) {
 		m_UpdateSites = updateSites;
 	}
 
