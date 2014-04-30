@@ -13,14 +13,12 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.codehaus.plexus.util.StringUtils;
 
-@Mojo(name = "ddehd", requiresDependencyResolution = ResolutionScope.COMPILE)
-@Execute(goal = "ddehd", phase = LifecyclePhase.COMPILE)
+@Mojo(name = "ddehd")
+@Execute(goal = "ddehd")
 public class HeadlessDesignerBuilder extends AbstractMojo {
 	private final Pattern NOTESPATTERN = Pattern.compile("(notes2.exe.*? )");
 

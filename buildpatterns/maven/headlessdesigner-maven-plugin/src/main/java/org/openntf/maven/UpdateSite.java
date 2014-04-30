@@ -1,9 +1,7 @@
 package org.openntf.maven;
 
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-@Mojo(name = "UpdateSite")
 public class UpdateSite {
 
 	public UpdateSite() {
