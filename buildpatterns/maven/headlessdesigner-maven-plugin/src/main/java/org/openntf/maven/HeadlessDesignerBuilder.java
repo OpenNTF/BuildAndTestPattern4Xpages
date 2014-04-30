@@ -39,7 +39,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File m_OutputDir;
 
-	@Parameter(property = "ddehd.updatesites")
+	@Parameter(property = "ddehd.updateSites")
 	private List<UpdateSite> m_UpdateSites;
 
 	public void execute() throws MojoExecutionException, MojoFailureException {
