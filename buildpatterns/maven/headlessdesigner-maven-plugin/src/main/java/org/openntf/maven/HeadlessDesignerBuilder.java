@@ -95,7 +95,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	}
 
 	private void moveNSFtoTargetDirectory() throws MojoExecutionException {
-		StringBuilder sbNotesData = new StringBuilder("=");
+		StringBuilder sbNotesData = new StringBuilder();
 		sbNotesData.append(m_NotesData);
 		sbNotesData.append("\\");
 		sbNotesData.append(m_TargetDBName);
@@ -229,7 +229,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		try {
 			PrintWriter pw = new PrintWriter(fileBuild);
 			pw.println("config,true,true");
-			pw.println("importandbuild," + m_ODPDirectory + "," + m_TargetDBName);
+			pw.println("importandbuild," + m_ODPDirectory + "/.project," + m_TargetDBName);
 			pw.println("wait," + m_TargetDBName + ",3");
 			pw.println("clean");
 			pw.println("exit,100");
