@@ -22,21 +22,39 @@ import org.codehaus.plexus.util.StringUtils;
 public class HeadlessDesignerBuilder extends AbstractMojo {
 	private final Pattern NOTESPATTERN = Pattern.compile("(notes2.exe.*? )");
 
+	/**
+	 * Path to the designer.exe (e.g. C:\Program Files\IBM\Notes\Designer.exe)
+	 */
 	@Parameter(property = "ddehd.designerexec", defaultValue = "designer.exe")
 	private String m_DesignerExec;
+	/**
+	 * Path to the notes data directory (e.g. C:\Program Files\IBM\Notes\Data)
+	 */
 	@Parameter(property = "ddehd.notesdata")
 	private String m_NotesData;
+	/**
+	 * Name of the target database like "crm.nsf"
+	 */
 	@Parameter(property = "ddehd.targetdbname")
 	private String m_TargetDBName;
 
 	@Parameter(property = "ddehd.odpdirectory")
 	private String m_ODPDirectory;
 
+	/**
+	 * Path to File with the build instructions for the headless designer. I
+	 * this value is set, all other values like updateSites, odpdirectory and
+	 * targetdbname will be ignored.
+	 */
 	@Parameter(property = "ddehd.filename")
 	private String m_Filename;
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
 	private File m_OutputDir;
 
+	/**
+	 * Collection of updatesite / feature definitions, to prepare the headless
+	 * designer with the right environment for building the applications
+	 */
 	@Parameter(property = "ddehd.updateSites", alias = "updateSites")
 	private List<UpdateSite> m_UpdateSites;
 
@@ -55,26 +73,37 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		getLog().info("TargetDB Name =" + m_TargetDBName);
 		getLog().info("ODP           =" + m_ODPDirectory);
 		getLog().info("Updatesite    =" + m_UpdateSites);
+		getLog().info("OuptDirectory =" + m_OutputDir);
 		if (StringUtils.isEmpty(m_NotesData) || StringUtils.isEmpty(m_TargetDBName) || StringUtils.isEmpty(m_ODPDirectory)) {
 			getLog().info("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata)");
 			throw new MojoExecutionException("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata, ddehd.odpdirectory)");
 		}
+		if (StringUtils.isEmpty(m_Filename)) {
+			deployUpdateSites();
+			activateFeatures();
+			buildApplication();
+			deactivateFeatures();
+			uninstallUpdateSites();
+			moveNSFtoTargetDirectory();
+		} else {
+			customBuild();
+		}
+	}
+
+	private void moveNSFtoTargetDirectory() {
 		StringBuilder sbNotesData = new StringBuilder("=");
 		sbNotesData.append(m_NotesData);
 		sbNotesData.append("\\notes.ini");
 
+	}
+
+	private void executeDesigner(String fileName) throws MojoExecutionException {
+
 		StringBuilder sbDesignerArgs = new StringBuilder("-Dcom.ibm.designer.cmd.file=\"");
-		/*
-		 * sbDesignerArgs.append("true,true,");
-		 * sbDesignerArgs.append(m_TargetDBName); sbDesignerArgs.append(",");
-		 * sbDesignerArgs.append("importandbuild,");
-		 * sbDesignerArgs.append(m_ODPDirectory + "\\.project,");
-		 * sbDesignerArgs.append(m_TargetDBName);
-		 */
-		sbDesignerArgs.append(m_Filename);
+		sbDesignerArgs.append(fileName);
 		sbDesignerArgs.append("\"");
 
-		getLog().info("Designer call = " + sbDesignerArgs.toString());
+		getLog().debug("Designer call = " + sbDesignerArgs.toString());
 		ProcessBuilder pb = new ProcessBuilder(m_DesignerExec, "-RPARAMS", "-console", "-vmargs", sbDesignerArgs.toString());
 
 		try {
@@ -82,7 +111,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 			// " -console -RPARAMS -vmargs "+sbDesignerArgs.toString());
 			Process process = pb.start();
 			int result = process.waitFor();
-			getLog().info("DDE HeadlessDesigner ended with: " + result);
+			getLog().debug("DDE HeadlessDesigner ended with: " + result);
 			boolean finished = false;
 			int nCounter = 0;
 			while (!finished || nCounter < 60) {
@@ -96,6 +125,31 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		} catch (Exception ex) {
 			throw new MojoExecutionException("DDE HeadlessDesignerPlugin reports an error: ", ex);
 		}
+		getLog().debug("Designer execution ended");
+	}
+
+	private void customBuild() {
+
+	}
+
+	private void deployUpdateSites() {
+
+	}
+
+	private void activateFeatures() {
+
+	}
+
+	private void buildApplication() {
+
+	}
+
+	private void deactivateFeatures() {
+
+	}
+
+	private void uninstallUpdateSites() {
+
 	}
 
 	private boolean checkIfNotesHasFinished() throws IOException, InterruptedException {
@@ -110,7 +164,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 			Matcher iMapSuccessMatcher = NOTESPATTERN.matcher(line);
 			if (iMapSuccessMatcher.find()) {
 				Thread.sleep(1000);
-				getLog().info("Waiting for Notes to complete building.");
+				getLog().debug("Waiting for Notes to complete building.");
 				return false;
 			}
 		}
