@@ -157,7 +157,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 				for (Feature site : m_Features) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("com.ibm.designer.domino.tools.userlessbuild.jobs.UpdateManagerJob,-command install -from ");
-					sb.append(site.getURL());
+					sb.append(site.getUrl());
 					sb.append(" -to file:/");
 					sb.append(m_NotesData);
 					sb.append("/workspace/applications");
