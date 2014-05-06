@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>
+	<artifactId>${artifactId}</artifactId>
+	<version>${version}</version>
+	<packaging>pom</packaging>
+	<name>${artifactId} :: parent</name>
+	<description>${artifactId} parent</description>
+
+
+	<properties>
+		<ddehd.designerexec>${notes-designer}</ddehd.designerexec>
+		<ddehd.targetdbname>thispagehl.nsf</ddehd.targetdbname>
+		<ddehd.notesdata>${notes-data}</ddehd.notesdata>
+		<ddehd.odpdirectory>${basedir}/on-disk-project</ddehd.odpdirectory>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openntf.maven</groupId>
+				<artifactId>headlessdesigner-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<extensions>true</extensions>
+				<configuration>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
