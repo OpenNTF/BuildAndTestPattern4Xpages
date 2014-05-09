@@ -16,6 +16,11 @@
 	<modules>
 		<module id="${rootArtifactId}.odp" dir="__rootArtifactId__.odp"
 			name="${rootArtifactId}.odp">
+			<fileSets>
+				<fileSet encoding="UTF-8">
+					<directory>on-disk-project</directory>
+				</fileSet>
+			</fileSets>
 		</module>
 	</modules>
 </archetype-descriptor>

@@ -11,7 +11,7 @@
 
 	<properties>
 		<ddehd.designerexec>${notes-designer}</ddehd.designerexec>
-		<ddehd.targetdbname>thispagehl.nsf</ddehd.targetdbname>
+		<ddehd.targetdbname>${notes-nsf}</ddehd.targetdbname>
 		<ddehd.notesdata>${notes-data}</ddehd.notesdata>
 		<ddehd.odpdirectory>${basedir}/on-disk-project</ddehd.odpdirectory>
 	</properties>

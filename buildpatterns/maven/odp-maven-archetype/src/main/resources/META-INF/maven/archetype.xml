@@ -5,5 +5,6 @@
 	<id>odp-maven-archetype</id>
 	<resources>
 		<resource>__artifactId__.odp/pom.xml</resource>
+		<resource>__artifactId__.odp/on-disk-project</resource>
 	</resources>
 </archetype>
