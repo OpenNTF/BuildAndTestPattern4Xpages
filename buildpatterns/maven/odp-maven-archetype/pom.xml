@@ -5,6 +5,12 @@
 	<artifactId>odp-maven-archetype</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
 
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
