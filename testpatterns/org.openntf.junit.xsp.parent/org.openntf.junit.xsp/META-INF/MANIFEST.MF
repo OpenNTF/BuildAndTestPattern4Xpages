@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JUnit XSP Integration
+Bundle-SymbolicName: org.openntf.junit.xsp;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: WebGate Consulting AG
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime,
+ org.openntf.junit.libraries;visibility:=reexport,
+ com.ibm.xsp.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Activator: org.openntf.junit.xsp.JUnitXSPActivator
+Export-Package: org.openntf.junit.xsp
