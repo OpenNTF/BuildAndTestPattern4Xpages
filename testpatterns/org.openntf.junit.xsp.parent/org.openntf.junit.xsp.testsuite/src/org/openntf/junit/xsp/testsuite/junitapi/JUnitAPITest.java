@@ -1,6 +1,7 @@
 package org.openntf.junit.xsp.testsuite.junitapi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.Request;
@@ -9,9 +10,9 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
 import org.openntf.junit.xsp.junit4.XSPResult;
 import org.openntf.junit.xsp.junit4.XSPRunListener;
-import org.openntf.junit.xsp.junit4.XSPTestRunner;
+import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock;
 
-public class RunnerTest {
+public class JUnitAPITest {
 
 	@Test
 	public void testWithRequestFromClassAndSimpleResultObject() {
@@ -40,16 +41,9 @@ public class RunnerTest {
 		assertEquals(3, xspResult.getRunCount());
 		assertEquals(1, xspResult.getFailureCount());
 		assertEquals(1, xspResult.getErrorCount());
-		System.out.println(xspResult.getErrorEntries().get(0).getFailureMessage());
-		System.out.println(xspResult.getErrorEntries().get(0).testDuration());
 		assertTrue("java.lang.NullPointerException".equals(xspResult.getErrorEntries().get(0).getFailureMessage()));
 		assertTrue("This test will fail".equals(xspResult.getFailureEntrties().get(0).getFailureMessage()));
 	}
 
-	@Test
-	public void testWithXSPTestRunner() {
-		XSPResult xspResult = XSPTestRunner.testSingleClass(TestMock.class);
-		assertEquals(3, xspResult.getRunCount());
-	}
 
 }

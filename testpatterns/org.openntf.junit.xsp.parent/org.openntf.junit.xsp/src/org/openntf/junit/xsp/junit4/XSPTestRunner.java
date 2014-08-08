@@ -1,5 +1,8 @@
 package org.openntf.junit.xsp.junit4;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.runner.Request;
 import org.junit.runner.Result;
 import org.junit.runner.Runner;
@@ -11,13 +14,28 @@ public class XSPTestRunner {
 		Request request = Request.aClass(testClass);
 		Result result = new Result();
 		XSPResult xspResult = new XSPResult();
+		RunNotifier runNotifier = buildRunNotifier(xspResult, result);
 		Runner testRunner = request.getRunner();
+		testRunner.run(runNotifier);
+		return xspResult;
+	}
+
+	private static RunNotifier buildRunNotifier(XSPResult xspResult, Result result) {
 		RunNotifier runNotifier = new RunNotifier();
 		XSPRunListener xspRunListener = new XSPRunListener(xspResult);
 		runNotifier.addListener(xspRunListener);
 		runNotifier.addListener(result.createListener());
-		testRunner.run(runNotifier);
-		return xspResult;
+		return runNotifier;
+
+	}
+
+	public static List<XSPResult> testClasses(Class<?>... testClasses) {
+		List<XSPResult> testResults = new ArrayList<XSPResult>(testClasses.length);
+		for (Class<?> test : testClasses) {
+			XSPResult result = testSingleClass(test);
+			testResults.add(result);
+		}
+		return testResults;
 	}
 
 }

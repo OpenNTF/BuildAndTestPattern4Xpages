@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.testsuite.junitapi;
+package org.openntf.junit.xsp.testsuite.junitapi.tests;
 
 import static org.junit.Assert.*;
 
