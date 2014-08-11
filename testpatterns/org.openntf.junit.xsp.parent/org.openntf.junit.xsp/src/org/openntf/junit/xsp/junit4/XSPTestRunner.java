@@ -1,7 +1,10 @@
 package org.openntf.junit.xsp.junit4;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.runner.Request;
 import org.junit.runner.Result;

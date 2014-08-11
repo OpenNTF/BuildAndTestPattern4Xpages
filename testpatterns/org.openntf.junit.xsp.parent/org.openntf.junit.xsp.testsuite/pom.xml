@@ -20,8 +20,16 @@
 						<junit-test-running>yes</junit-test-running>
 					</systemProperties>
 					<useUIHarness>false</useUIHarness>
+					<providerHint>junit47</providerHint>
+					<excludes>
+						<exlude>**/Abstract*Test.class</exlude>
+						<exlude>**/Abstract*TestCase.class</exlude>
+						<exlude>**/*$*</exlude>
+						<exlude>**/TestMoc*.class</exlude>
+					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 </project>

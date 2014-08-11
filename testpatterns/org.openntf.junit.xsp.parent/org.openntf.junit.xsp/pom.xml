@@ -10,9 +10,6 @@
 	</parent>
 	<artifactId>org.openntf.junit.xsp</artifactId>
 	<name>org.openntf.junit.xsp</name>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<packaging>eclipse-plugin</packaging>
 	<build>
 		<sourceDirectory>src</sourceDirectory>

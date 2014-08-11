@@ -9,8 +9,7 @@ public class TestEntry {
 	private final String m_MethodName;
 	private final long m_StartTime;
 	private long m_EndTime;
-	private String m_FailureMessage;
-	private String m_FailurTrace;
+	private TestFailure m_Failure;
 	private TestStatus m_Status = TestStatus.START;
 
 	public static TestEntry buildTestEntry(String className, String methodName) {
@@ -25,14 +24,12 @@ public class TestEntry {
 	}
 
 	public void failure(String reason, String trace) {
-		m_FailureMessage = reason;
-		m_FailurTrace = trace;
+		m_Failure = new TestFailure(reason, trace);
 		m_Status = TestStatus.FAILURE;
 	}
 
 	public void error(String reason, String trace) {
-		m_FailureMessage = reason;
-		m_FailurTrace = trace;
+		m_Failure = new TestFailure(reason, trace);
 		m_Status = TestStatus.ERROR;
 	}
 
@@ -67,11 +64,11 @@ public class TestEntry {
 	}
 
 	public String getFailureMessage() {
-		return m_FailureMessage;
+		return m_Failure != null ? m_Failure.getFailureMessage() : "";
 	}
 
-	public String getFailurTrace() {
-		return m_FailurTrace;
+	public String getFailureTrace() {
+		return m_Failure != null ? m_Failure.getFailurTrace() : "";
 	}
 
 	public TestStatus getStatus() {

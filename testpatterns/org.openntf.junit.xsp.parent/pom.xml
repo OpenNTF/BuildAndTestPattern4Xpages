@@ -9,6 +9,9 @@
 	<properties>
 		<tycho-version>0.19.0</tycho-version>
 		<compiler>1.6</compiler>
+		<license.failIfMissing>false</license.failIfMissing>
+		<lic.file>${project.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<repositories>

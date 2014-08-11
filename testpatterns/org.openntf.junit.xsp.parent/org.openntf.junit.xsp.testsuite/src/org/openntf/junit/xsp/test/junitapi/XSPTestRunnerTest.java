@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.testsuite.junitapi;
+package org.openntf.junit.xsp.test.junitapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +29,7 @@ public class XSPTestRunnerTest {
 		assertTrue("java.lang.NullPointerException".equals(xspResult.getErrorEntries().get(0).getFailureMessage()));
 		assertTrue("This test will fail".equals(xspResult.getFailureEntrties().get(0).getFailureMessage()));
 	}
+
 	@Test
 	public void testMultibleTestClasses() {
 		List<XSPResult> testResults = XSPTestRunner.testClasses(TestMock.class, TestMock2.class);

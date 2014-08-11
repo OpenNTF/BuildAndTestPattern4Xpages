@@ -20,6 +20,7 @@
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="com.ibm.xsp.core"/>
+      <import plugin="com.ibm.commons"/>
    </requires>
 
    <plugin
