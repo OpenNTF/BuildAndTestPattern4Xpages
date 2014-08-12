@@ -5,24 +5,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
 import org.openntf.junit.xsp.junit4.TestEntry.TestStatus;
 
-import com.ibm.commons.util.StringUtil;
-
+@XmlRootElement(name = "testsuite")
+@XmlAccessorType(XmlAccessType.NONE)
 public class XSPResult {
 
 	private Map<String, TestEntry> m_TestEntries = new ConcurrentSkipListMap<String, TestEntry>();
 
+	@XmlAttribute(name = "tests")
 	public int getRunCount() {
 		return m_TestEntries.size();
 	}
 
+	@XmlAttribute(name = "failures")
 	public int getFailureCount() {
 		return countByStatus(TestStatus.FAILURE);
 	}
 
+	@XmlAttribute(name = "errors")
 	public int getErrorCount() {
 		return countByStatus(TestStatus.ERROR);
 	}
@@ -37,6 +46,11 @@ public class XSPResult {
 		return count;
 	}
 
+	@XmlElement(name = "testcase")
+	public List<TestEntry> getTestEntries() {
+		return new ArrayList<TestEntry>(m_TestEntries.values());
+	}
+
 	public void startTest(Description description) {
 		TestEntry entry = TestEntry.buildTestEntry(description.getClassName(), description.getMethodName());
 		m_TestEntries.put(entry.getKey(), entry);
@@ -45,22 +59,14 @@ public class XSPResult {
 
 	public void reportFailure(Failure failure) {
 		TestEntry testEntry = getEntryByDescription(failure.getDescription());
-		testEntry.failure(failure.getMessage(), failure.getTrace());
+		testEntry.failure(TestFailure.buildFailure(failure));
 
 	}
 
 	public void reportError(Failure failure) {
 		TestEntry testEntry = getEntryByDescription(failure.getDescription());
-		String exceptionMessage = getExceptionMessage(failure.getException());
-		testEntry.error(exceptionMessage, failure.getTrace());
+		testEntry.error(TestFailure.buildError(failure));
 
-	}
-
-	private String getExceptionMessage(Throwable exception) {
-		if (StringUtil.isEmpty(exception.getMessage())) {
-			return exception.toString();
-		}
-		return exception.getMessage();
 	}
 
 	public void endTest(Description description) {

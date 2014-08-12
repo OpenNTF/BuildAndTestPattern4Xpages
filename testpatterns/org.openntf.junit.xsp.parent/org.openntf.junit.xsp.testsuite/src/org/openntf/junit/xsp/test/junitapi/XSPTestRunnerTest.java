@@ -26,7 +26,7 @@ public class XSPTestRunnerTest {
 		assertEquals(3, xspResult.getRunCount());
 		assertEquals(1, xspResult.getFailureCount());
 		assertEquals(1, xspResult.getErrorCount());
-		assertTrue("java.lang.NullPointerException".equals(xspResult.getErrorEntries().get(0).getFailureMessage()));
+		assertTrue("java.lang.NullPointerException".equals(xspResult.getErrorEntries().get(0).getErrorType()));
 		assertTrue("This test will fail".equals(xspResult.getFailureEntrties().get(0).getFailureMessage()));
 	}
 
