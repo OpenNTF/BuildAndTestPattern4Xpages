@@ -2,7 +2,6 @@ package org.openntf.junit.xsp.junit4;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

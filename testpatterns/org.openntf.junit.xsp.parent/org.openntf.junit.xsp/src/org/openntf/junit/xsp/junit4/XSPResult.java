@@ -10,17 +10,25 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.junit.runner.Description;
+import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.openntf.junit.xsp.junit4.TestEntry.TestStatus;
 
 @XmlRootElement(name = "testsuite")
+@XmlType(name = "testsuite")
 @XmlAccessorType(XmlAccessType.NONE)
 public class XSPResult {
 
 	private Map<String, TestEntry> m_TestEntries = new ConcurrentSkipListMap<String, TestEntry>();
 	private String m_ClassName;
+	private int m_Ignored = 0;
+	private long m_EndTime = Integer.MIN_VALUE;
+	private long m_StartTime = System.currentTimeMillis();
+	private String m_SystemOut;
+	private String m_SystemErr;
 
 	@XmlAttribute(name = "tests")
 	public int getRunCount() {
@@ -104,6 +112,30 @@ public class XSPResult {
 	public List<TestEntry> getFailureEntrties() {
 		List<TestEntry> failureEntries = getEntriesByTestStatus(TestStatus.FAILURE);
 		return failureEntries;
+	}
+
+	public int getIgnoreCount() {
+		return m_Ignored;
+	}
+
+	public void applyResult(Result result, ConsoleLogRecorder recorder) {
+		m_Ignored = result.getIgnoreCount();
+		m_EndTime = System.currentTimeMillis();
+		m_SystemOut = recorder.getSystemOut();
+		m_SystemErr = recorder.getErrorOut();
+	}
+
+	@XmlAttribute(name = "time")
+	public long getTime() {
+		return m_EndTime - m_StartTime;
+	}
+
+	public String getSystemOut() {
+		return m_SystemOut;
+	}
+
+	public String getSystemErr() {
+		return m_SystemErr;
 	}
 
 }

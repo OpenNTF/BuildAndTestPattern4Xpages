@@ -11,12 +11,18 @@ import org.junit.runner.notification.RunNotifier;
 public class XSPTestRunner {
 
 	public static XSPResult testSingleClass(Class<?> testClass) {
+		ConsoleLogRecorder recorder = new ConsoleLogRecorder();
+
+		recorder.startRecording();
+		XSPResult xspResult = new XSPResult();
 		Request request = Request.aClass(testClass);
 		Result result = new Result();
-		XSPResult xspResult = new XSPResult();
 		RunNotifier runNotifier = buildRunNotifier(xspResult, result);
 		Runner testRunner = request.getRunner();
 		testRunner.run(runNotifier);
+		recorder.stopRecordingAndResetSystem();
+
+		xspResult.applyResult(result, recorder);
 		return xspResult;
 	}
 
@@ -39,7 +45,7 @@ public class XSPTestRunner {
 	}
 
 	public static XSPTestSuite testClassesAsSuite(Class<?>... testClasses) {
-		List<XSPResult> results = testClasses(testClasses); 
+		List<XSPResult> results = testClasses(testClasses);
 		return XSPTestSuite.buildTestSuite(results);
 	}
 

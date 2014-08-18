@@ -2,6 +2,7 @@ package org.openntf.junit.xsp.testsuite.junitapi.tests;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TestMock {
@@ -21,5 +22,10 @@ public class TestMock {
 	public void testMethodWithException() {
 		String testString = null;
 		testString.replace("someThing", "otherThing");
+	}
+	@Test
+	@Ignore("Ignored")
+	public void testIgnored() {
+		assertFalse("Should not run",true);
 	}
 }
