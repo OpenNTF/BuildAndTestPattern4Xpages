@@ -20,6 +20,7 @@ import org.openntf.junit.xsp.junit4.TestEntry.TestStatus;
 public class XSPResult {
 
 	private Map<String, TestEntry> m_TestEntries = new ConcurrentSkipListMap<String, TestEntry>();
+	private String m_ClassName;
 
 	@XmlAttribute(name = "tests")
 	public int getRunCount() {
@@ -34,6 +35,11 @@ public class XSPResult {
 	@XmlAttribute(name = "errors")
 	public int getErrorCount() {
 		return countByStatus(TestStatus.ERROR);
+	}
+
+	@XmlAttribute(name = "name")
+	public String getTestClassName() {
+		return m_ClassName;
 	}
 
 	private int countByStatus(TestStatus status) {
@@ -54,7 +60,9 @@ public class XSPResult {
 	public void startTest(Description description) {
 		TestEntry entry = TestEntry.buildTestEntry(description.getClassName(), description.getMethodName());
 		m_TestEntries.put(entry.getKey(), entry);
-
+		if (m_ClassName == null) {
+			m_ClassName = description.getClassName();
+		}
 	}
 
 	public void reportFailure(Failure failure) {

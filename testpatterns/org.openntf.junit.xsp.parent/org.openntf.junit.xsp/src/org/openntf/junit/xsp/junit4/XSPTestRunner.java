@@ -1,10 +1,7 @@
 package org.openntf.junit.xsp.junit4;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.runner.Request;
 import org.junit.runner.Result;
@@ -39,6 +36,11 @@ public class XSPTestRunner {
 			testResults.add(result);
 		}
 		return testResults;
+	}
+
+	public static XSPTestSuite testClassesAsSuite(Class<?>... testClasses) {
+		List<XSPResult> results = testClasses(testClasses); 
+		return XSPTestSuite.buildTestSuite(results);
 	}
 
 }
