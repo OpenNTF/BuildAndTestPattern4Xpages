@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.junit4;
+package org.openntf.junit.xsp.junit4.report;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;

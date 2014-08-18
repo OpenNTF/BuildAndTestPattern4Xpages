@@ -7,6 +7,9 @@ import org.junit.runner.Request;
 import org.junit.runner.Result;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.RunNotifier;
+import org.openntf.junit.xsp.junit4.report.ConsoleLogRecorder;
+import org.openntf.junit.xsp.junit4.report.XSPResult;
+import org.openntf.junit.xsp.junit4.report.XSPTestSuite;
 
 public class XSPTestRunner {
 

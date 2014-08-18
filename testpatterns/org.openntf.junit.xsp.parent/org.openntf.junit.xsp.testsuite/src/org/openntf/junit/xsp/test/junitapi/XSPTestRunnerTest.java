@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.junit.Test;
-import org.openntf.junit.xsp.junit4.XSPResult;
 import org.openntf.junit.xsp.junit4.XSPTestRunner;
+import org.openntf.junit.xsp.junit4.report.XSPResult;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock2;
 

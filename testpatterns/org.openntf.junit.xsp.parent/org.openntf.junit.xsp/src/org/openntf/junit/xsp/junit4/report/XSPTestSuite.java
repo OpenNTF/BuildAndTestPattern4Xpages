@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.junit4;
+package org.openntf.junit.xsp.junit4.report;
 
 import java.util.List;
 
@@ -19,9 +19,17 @@ public class XSPTestSuite {
 	private int m_Errors;
 	private List<XSPResult> m_Result;
 
-	private XSPTestSuite(int tests, int failuers, int errors, List<XSPResult> results) {
+	private XSPTestSuite(List<XSPResult> results) {
+		int tests = 0;
+		int errors = 0;
+		int failures = 0;
+		for (XSPResult result : results) {
+			tests += result.getRunCount();
+			errors += result.getErrorCount();
+			failures += result.getFailureCount();
+		}
 		m_Tests = tests;
-		m_Failuers = failuers;
+		m_Failuers = failures;
 		m_Errors = errors;
 		m_Result = results;
 	}
@@ -47,20 +55,12 @@ public class XSPTestSuite {
 	}
 
 	public static XSPTestSuite newJAXBInstance() {
-		return new XSPTestSuite(0, 0, 0, null);
+		return new XSPTestSuite( null);
 
 	}
 
 	public static XSPTestSuite buildTestSuite(List<XSPResult> results) {
-		int tests = 0;
-		int errors = 0;
-		int failures = 0;
-		for (XSPResult result : results) {
-			tests += result.getRunCount();
-			errors += result.getErrorCount();
-			failures += result.getFailureCount();
-		}
-		return new XSPTestSuite(tests, failures, errors, results);
+		return new XSPTestSuite(results);
 	}
 
 }

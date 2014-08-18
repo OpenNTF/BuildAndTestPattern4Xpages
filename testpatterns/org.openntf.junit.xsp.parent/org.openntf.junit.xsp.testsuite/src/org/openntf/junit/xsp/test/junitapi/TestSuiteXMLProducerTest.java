@@ -23,9 +23,9 @@ import javax.xml.validation.Validator;
 
 import org.junit.Test;
 import org.openntf.junit.xsp.junit4.TestSuiteXMLProducer;
-import org.openntf.junit.xsp.junit4.XSPResult;
 import org.openntf.junit.xsp.junit4.XSPTestRunner;
-import org.openntf.junit.xsp.junit4.XSPTestSuite;
+import org.openntf.junit.xsp.junit4.report.XSPResult;
+import org.openntf.junit.xsp.junit4.report.XSPTestSuite;
 import org.openntf.junit.xsp.test.junitapi.helpers.SimpleErrorHandler;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock2;

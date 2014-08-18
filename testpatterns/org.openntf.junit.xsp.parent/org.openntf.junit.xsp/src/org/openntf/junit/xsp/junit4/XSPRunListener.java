@@ -2,6 +2,7 @@ package org.openntf.junit.xsp.junit4;
 
 import org.junit.runner.Description;
 import org.junit.runner.notification.Failure;
+import org.openntf.junit.xsp.junit4.report.XSPResult;
 
 public class XSPRunListener extends org.junit.runner.notification.RunListener {
 

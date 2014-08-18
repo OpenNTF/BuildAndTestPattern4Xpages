@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.junit4;
+package org.openntf.junit.xsp.junit4.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import org.openntf.junit.xsp.junit4.TestEntry.TestStatus;
+import org.openntf.junit.xsp.junit4.report.TestEntry.TestStatus;
 
 @XmlRootElement(name = "testsuite")
 @XmlType(name = "testsuite")

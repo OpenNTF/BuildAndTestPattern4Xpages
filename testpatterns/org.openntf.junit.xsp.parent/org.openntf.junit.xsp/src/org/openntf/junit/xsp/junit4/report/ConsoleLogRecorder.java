@@ -1,4 +1,4 @@
-package org.openntf.junit.xsp.junit4;
+package org.openntf.junit.xsp.junit4.report;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

@@ -7,6 +7,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.openntf.junit.xsp.junit4.report.XSPResult;
+import org.openntf.junit.xsp.junit4.report.XSPTestSuite;
+
 public enum TestSuiteXMLProducer {
 	INSTANCE;
 
