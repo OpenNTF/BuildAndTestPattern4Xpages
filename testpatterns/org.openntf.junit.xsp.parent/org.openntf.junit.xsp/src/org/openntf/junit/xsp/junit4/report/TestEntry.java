@@ -10,7 +10,17 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.NONE)
 public class TestEntry {
 	public enum TestStatus {
-		START, SUCCESS, ERROR, FAILURE
+		START("/icons/vwicn001.gif"), SUCCESS("/icons/vwicn082.gif"), ERROR("/icons/vwicn080.gif"), FAILURE("/icons/vwicn081.gif");
+
+		private final String m_IconURL;
+
+		private TestStatus(String iconURL) {
+			m_IconURL = iconURL;
+		}
+
+		public Object getICONUrl() {
+			return m_IconURL;
+		}
 	};
 
 	private final String m_ClassName;
@@ -106,14 +116,12 @@ public class TestEntry {
 		return m_Failure != null ? m_Failure.getFailureType() : "";
 	}
 
-	
-	
 	public String getErrorMessage() {
 		return m_Error != null ? m_Error.getFailureMessage() : "";
 	}
 
 	public String getErrorTrace() {
-		return m_Failure != null ? m_Error.getFailureTrace() : "";
+		return m_Error != null ? m_Error.getFailureTrace() : "";
 	}
 
 	public String getErrorType() {

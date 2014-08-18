@@ -1,5 +1,7 @@
 package org.openntf.junit.xsp.junit4;
 
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,8 +49,13 @@ public class XSPTestRunner {
 		return testResults;
 	}
 
-	public static XSPTestSuite testClassesAsSuite(Class<?>... testClasses) {
-		List<XSPResult> results = testClasses(testClasses);
+	public static XSPTestSuite testClassesAsSuite(final Class<?>... testClasses) {
+		List<XSPResult> results = AccessController.doPrivileged(new PrivilegedAction<List<XSPResult>>() {
+			@Override
+			public List<XSPResult> run() {
+				return testClasses(testClasses);
+			}
+		});
 		return XSPTestSuite.buildTestSuite(results);
 	}
 

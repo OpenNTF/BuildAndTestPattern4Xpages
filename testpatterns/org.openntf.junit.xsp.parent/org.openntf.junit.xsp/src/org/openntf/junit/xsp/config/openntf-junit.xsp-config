@@ -1,0 +1,49 @@
+<faces-config>
+	<faces-config-extension>
+		<namespace-uri>http://www.openntf.org/xsp/junit</namespace-uri>
+		<default-prefix>junit</default-prefix>
+	</faces-config-extension>
+
+
+	<component>
+		<description>Set of classe names which contains JUnit4 Tests
+		</description>
+		<display-name>Testsuite</display-name>
+		<component-type>org.openntf.junit.xsp.component.testsuite
+		</component-type>
+		<component-class>org.openntf.junit.xsp.component.UITestsuite
+		</component-class>
+
+		<property>
+			<property-name>testClasses</property-name>
+			<property-class>java.util.Collection</property-class>
+			<property-extension>
+				<property-item-class>string</property-item-class>
+				<collection-property>true</collection-property>
+			</property-extension>
+		</property>
+		<property>
+			<description>Name of the xml file with the testresults</description>
+			<display-name>downloadFile</display-name>
+			<property-name>downloadFile</property-name>
+			<property-class>java.lang.String</property-class>
+			<property-extension>
+				<allow-run-time-binding>false</allow-run-time-binding>
+				<designer-extension>
+					<category>basics</category>
+				</designer-extension>
+			</property-extension>
+		</property>
+		<component-extension>
+			<component-family>org.openntf.junit.xsp.component.testsuite
+			</component-family>
+			<renderer-type>org.openntf.junit.xsp.component.testsuite
+			</renderer-type>
+			<tag-name>testsuite</tag-name>
+			<designer-extension>
+				<in-palette>true</in-palette>
+				<category>JUnit4</category>
+			</designer-extension>
+		</component-extension>
+	</component>
+</faces-config>
