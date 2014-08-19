@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:junit="http://www.openntf.org/xsp/junit">
+
+	<xc:cc_application navigationPath="/home/junit"
+		pageTitle="JUnit Sample Page - All well">
+		<xp:this.facets>
+			<xp:panel xp:key="facetRight">
+				<xp:link escape="true" text="download as XML" id="lnkDownload" value="junit_green.xsp/TEST-Success.xml"></xp:link></xp:panel>
+			<xp:panel xp:key="facetLeft">
+				<xc:cc_nav></xc:cc_nav></xp:panel>
+			<xp:panel xp:key="facetMiddle">
+				<junit:testsuite id="testuite1"
+					downloadFile="TEST-Success.xml">
+					<junit:this.testClasses>
+						<xp:value>
+							org.openntf.junit.example.Green1Test
+						</xp:value>
+						<xp:value>
+							org.openntf.junit.example.Green2Test
+						</xp:value>
+						<xp:value>
+							org.openntf.junit.example.Green3Test
+						</xp:value>
+					</junit:this.testClasses>
+				</junit:testsuite>
+			</xp:panel>
+		</xp:this.facets>
+	</xc:cc_application>
+
+</xp:view>
