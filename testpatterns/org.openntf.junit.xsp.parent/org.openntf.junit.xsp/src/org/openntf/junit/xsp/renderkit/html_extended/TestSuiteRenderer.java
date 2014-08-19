@@ -1,3 +1,18 @@
+/**
+ * Copyright WebGate Consulting AG, 2014
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+ * implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
 package org.openntf.junit.xsp.renderkit.html_extended;
 
 import java.io.IOException;
@@ -56,9 +71,11 @@ public class TestSuiteRenderer extends FacesRenderer {
 		rw.startElement("tr", testsuite);
 		rw.writeAttribute("class", "lotusFirst", null);
 
-		writeTD(rw, testsuite, "lotusFirstCell", "Tests: " + testResult.getTests());
-		writeTD(rw, testsuite, null, "Errors: " + testResult.getErrros());
-		writeTD(rw, testsuite, null, "Failures" + testResult.getFailures());
+		writeTD(rw, testsuite, "lotusFirstCell", "Tests: " + testResult.getTests(), "120px");
+		writeIconTD(rw, TestStatus.ERROR, "");
+		writeTD(rw, testsuite, null, "Errors: " + testResult.getErrros(), "120px");
+		writeIconTD(rw, TestStatus.FAILURE, "");
+		writeTD(rw, testsuite, null, "Failures: " + testResult.getFailures(), "120px");
 		if (testResult.getErrros() + testResult.getFailures() > 0) {
 			writeTDRED(rw, testsuite, "lotusLastCell");
 		} else {
@@ -68,13 +85,21 @@ public class TestSuiteRenderer extends FacesRenderer {
 		rw.endElement("table");
 	}
 
-	private void writeTD(ResponseWriter rw, UITestsuite testsuite, String uiClass, String content) throws IOException {
+	private void writeTD(ResponseWriter rw, UITestsuite testsuite, String uiClass, String content, String width) throws IOException {
 		rw.startElement("td", testsuite);
 		if (!StringUtil.isEmpty(uiClass)) {
 			rw.writeAttribute("class", uiClass, null);
 		}
+		if (!StringUtil.isEmpty(width)) {
+			rw.writeAttribute("width", width, null);
+		}
 		rw.writeText(content, null);
 		rw.endElement("td");
+
+	}
+
+	private void writeTD(ResponseWriter rw, UITestsuite testsuite, String uiClass, String content) throws IOException {
+		writeTD(rw, testsuite, uiClass, content, null);
 	}
 
 	private void writeTDRED(ResponseWriter rw, UITestsuite testsuite, String uiClass) throws IOException {
@@ -99,32 +124,73 @@ public class TestSuiteRenderer extends FacesRenderer {
 		int nCounter = 0;
 		for (XSPResult testcase : testResult.getResults()) {
 			String idSub = id + "_tc_" + nCounter;
-			rw.startElement("h2", testsuite);
-			rw.writeText(testcase.getTestClassName(), null);
-			rw.endElement("h2");
-			writeDetailResults(context, rw, idSub+"_details", testcase);
-			writeSystemOut(context, rw, idSub+"_sysout", testcase);
+			writeResultSummary(rw, idSub + "_details", testsuite, testcase, testResult);
+			writeDetailResults(context, rw, idSub + "_details", testcase);
+			writeSystemOut(context, rw, idSub + "_sysout", testcase);
 			nCounter++;
 		}
 	}
 
-	private void writeDetailResults(FacesContext context, ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
+	private void writeResultSummary(ResponseWriter rw, String id, UITestsuite testsuite, XSPResult testcase, XSPTestSuite testResult) throws IOException {
 		rw.startElement("table", null);
+		rw.writeAttribute("style", "margin-top:44px;", null);
+		rw.writeAttribute("class", "lotusTable", null);
+		rw.startElement("tr", null);
+		rw.writeAttribute("class", "lotusFirst", null);
+
+		writeIconTD(rw, getTestStatus(testcase), "lotusFirstCell");
+		rw.startElement("td", null);
+		rw.startElement("h2", null);
+		rw.writeAttribute("class", "lotusTitle", null);
+		rw.startElement("a", null);
+		rw.writeAttribute("onclick", buildOnClickCall(id), null);
+		rw.writeText(testcase.getTestClassName(), null);
+		rw.endElement("a");
+		rw.endElement("h2");
+		rw.endElement("td");
+
+		writeTD(rw, testsuite, "lotusAlignRight lotusLastCell", "(Tests: " + testcase.getRunCount() + ", Errors: " + testcase.getErrorCount() + ", Failures: " + testcase.getFailureCount()
+				+ ", Time: " + testcase.getTime() + " ms)");
+		rw.endElement("tr");
+		rw.endElement("table");
+	}
+
+	private TestStatus getTestStatus(XSPResult testcase) {
+		if (testcase.getErrorCount() > 0) {
+			return TestStatus.ERROR;
+		}
+		if (testcase.getFailureCount() > 0) {
+			return TestStatus.FAILURE;
+		}
+		// TODO Auto-generated method stub
+		return TestStatus.SUCCESS;
+	}
+
+	private void writeDetailResults(FacesContext context, ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
+		rw.startElement("div", null);
+		if (getTestStatus(testcase) == TestStatus.SUCCESS) {
+			rw.writeAttribute("style", "margin-left:20px;display:none", null);
+		} else {
+			rw.writeAttribute("style", "margin-left:20px", null);			
+		}
 		rw.writeAttribute("id", idSub, null);
+		rw.startElement("table", null);
+		rw.writeAttribute("id", idSub + "_table", null);
 		rw.writeAttribute("class", "lotusTable", null);
 
 		int nCounter = 0;
 		for (TestEntry entry : testcase.getTestEntries()) {
 			String entryID = idSub + "_" + nCounter;
 			rw.startElement("tr", null);
-			buildIconTD(rw, entry.getStatus());
+			writeIconTD(rw, entry.getStatus(), "lotusFirstCell");
 			writeTD(rw, null, "", entry.getMethodName());
-			writeTD(rw, null, "lotusLasCell lotusRight", buildDurationString(entry));
+			writeTD(rw, null, "lotusAlignRight lotusLastCell", buildDurationString(entry));
 			rw.endElement("tr");
 			writeFailureInfos(rw, entryID, entry);
 			nCounter++;
 		}
 		rw.endElement("table");
+		rw.endElement("div");
 
 	}
 
@@ -145,7 +211,7 @@ public class TestSuiteRenderer extends FacesRenderer {
 			}
 			rw.endElement("p");
 			rw.startElement("a", null);
-			rw.writeAttribute("onclick", "junitDetailToggle('" + entryID + "')", null);
+			rw.writeAttribute("onclick", buildOnClickCall(entryID), null);
 			rw.writeText("Details (show / hide)", null);
 			rw.endElement("a");
 			rw.startElement("br", null);
@@ -164,13 +230,21 @@ public class TestSuiteRenderer extends FacesRenderer {
 		}
 	}
 
+	private String buildOnClickCall(String entryID) {
+		return "junitDetailToggle('" + entryID + "')";
+	}
+
 	private String buildDurationString(TestEntry entry) {
 		return entry.getTestDuration() + " ms";
 	}
 
-	private void buildIconTD(ResponseWriter rw, TestStatus status) throws IOException {
+	private void writeIconTD(ResponseWriter rw, TestStatus status, String cssClass) throws IOException {
 		rw.startElement("td", null);
 		rw.writeAttribute("width", "20px", null);
+		if (!StringUtil.isEmpty(cssClass)) {
+			rw.writeAttribute("class", cssClass, null);
+
+		}
 		rw.startElement("img", null);
 		rw.writeAttribute("src", status.getICONUrl(), null);
 		rw.endElement("img");
@@ -179,15 +253,16 @@ public class TestSuiteRenderer extends FacesRenderer {
 
 	private void writeSystemOut(FacesContext context, ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
 		rw.startElement("div", null);
+		rw.writeAttribute("style", "margin-left:20px", null);
 		rw.startElement("a", null);
-		rw.writeAttribute("onclick", "junitDetailToggle('" + idSub + "')", null);
+		rw.writeAttribute("onclick", buildOnClickCall(idSub), null);
 		rw.writeText("SystemOut / SytemError (show / hide)", null);
 		rw.endElement("a");
 		rw.startElement("br", null);
 		rw.endElement("br");
 		rw.startElement("div", null);
+		rw.writeAttribute("style", "display:none;margin-left:5px", null);
 		rw.writeAttribute("id", idSub, null);
-		rw.writeAttribute("style", "display:none", null);
 		rw.write("System.Out</br>");
 		rw.write(testcase.getSystemOut().replace(System.getProperty("line.separator"), "<br/>\n"));
 		rw.write("<br/><br/>System.Err</br>");

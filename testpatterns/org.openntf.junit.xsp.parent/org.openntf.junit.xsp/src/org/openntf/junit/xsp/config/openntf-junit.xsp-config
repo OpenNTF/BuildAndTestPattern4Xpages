@@ -43,6 +43,11 @@
 			<designer-extension>
 				<in-palette>true</in-palette>
 				<category>JUnit4</category>
+				<render-markup>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#xd;
+				&lt;xp:view xmlns:xp="http://www.ibm.com/xsp/core"&gt;&#xd;
+				&lt;xp:image url="/icons/testsuite.png" id="testsuite"&gt;&lt;/xp:image&gt;&#xd;
+				&lt;/xp:view&gt;&#xd;
+			</render-markup>
 			</designer-extension>
 		</component-extension>
 	</component>

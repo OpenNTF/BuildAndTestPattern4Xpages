@@ -12,6 +12,9 @@
 		<license.failIfMissing>false</license.failIfMissing>
 		<lic.file>${project.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ddehd.designerexec>${notes-designer}</ddehd.designerexec>
+		<ddehd.targetdbname>${notes-nsf}</ddehd.targetdbname>
+		<ddehd.notesdata>${notes-data}</ddehd.notesdata>
 	</properties>
 
 	<repositories>
@@ -146,6 +149,38 @@
 				</configuration>
 			</plugin>
 
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<header>${lic.file}</header>
+					<properties>
+						<owner>WebGate Consulting AG</owner>
+						<email>christian.guedemann@webgate.biz</email>
+					</properties>
+					<excludes>
+						<exclude>LICENSE</exclude>
+						<exclude>**/README</exclude>
+						<exclude>**.txt</exclude>
+						<exclude>**.xsp</exclude>
+						<exclude>**.metadata</exclude>
+						<exclude>**.xml</exclude>
+						<exclude>**/**.xml</exclude>
+						<exclude>org.openntf.junit.odp/**</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>src/main/resources/**</exclude>
+						<exclude>**/build.properties</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 
@@ -188,13 +223,46 @@
 		</pluginManagement>
 	</build>
 
-	<modules>
-		<module>org.openntf.junit.libraries</module>
-		<module>org.openntf.junit.xsp</module>
-		<module>org.openntf.junit.xsp.feature</module>
-		<module>org.openntf.junit.xsp.testsuite</module>
-		<module>org.openntf.junit.xsp.updatesite</module>
-	</modules>
+	<profiles>
+		<profile>
+			<id>pluginOnly</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>org.openntf.junit.libraries</module>
+				<module>org.openntf.junit.xsp</module>
+				<module>org.openntf.junit.xsp.feature</module>
+				<module>org.openntf.junit.xsp.testsuite</module>
+				<module>org.openntf.junit.xsp.updatesite</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>full</id>
+			<activation>
+				<property>
+					<name>nnotes-designer</name>
+				</property>
+			</activation>
+			<modules>
+				<module>org.openntf.junit.libraries</module>
+				<module>org.openntf.junit.xsp</module>
+				<module>org.openntf.junit.xsp.feature</module>
+				<module>org.openntf.junit.xsp.testsuite</module>
+				<module>org.openntf.junit.xsp.updatesite</module>
+				<module>org.openntf.junit.odp</module>
+			</modules>
+		</profile>
+	</profiles>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>manual</distribution>
+		</license>
+	</licenses>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.mycila</groupId>

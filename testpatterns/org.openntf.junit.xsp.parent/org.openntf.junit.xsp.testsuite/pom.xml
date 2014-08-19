@@ -32,4 +32,7 @@
 
 		</plugins>
 	</build>
+	<properties>
+		<lic.file>${project.parent.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
+	</properties>
 </project>
