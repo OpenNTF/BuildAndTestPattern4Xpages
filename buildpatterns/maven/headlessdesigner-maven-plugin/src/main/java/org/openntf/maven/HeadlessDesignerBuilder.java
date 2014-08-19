@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
@@ -21,7 +20,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 @Mojo(name = "ddehd")
 @Execute(goal = "ddehd")
-public class HeadlessDesignerBuilder extends AbstractMojo {
+public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 	private static final String UNINSTALL_TXT = "uninstall.txt";
 
 	private static final String DISABLE_TXT = "disable.txt";
@@ -44,12 +43,6 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	 */
 	@Parameter(property = "ddehd.notesdata")
 	private String m_NotesData;
-	/**
-	 * Name of the target database like "crm.nsf"
-	 */
-	@Parameter(property = "ddehd.targetdbname")
-	private String m_TargetDBName;
-
 	@Parameter(property = "ddehd.odpdirectory")
 	private String m_ODPDirectory;
 
@@ -60,24 +53,15 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	 */
 	@Parameter(property = "ddehd.filename")
 	private String m_Filename;
-	@Parameter(defaultValue = "${project.build.directory}")
-	private File m_TargetDir;
-
-	/**
-	 * Collection of updatesite / feature definitions, to prepare the headless
-	 * designer with the right environment for building the applications
-	 */
-	@Parameter(property = "ddehd.features", alias = "features")
-	private List<Feature> m_Features;
-
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		getLog().info("Starting DDE HeadlessDesigner Plugin");
-		getLog().info("Designer Exec 	=" + m_DesignerExec);
-		getLog().info("Notes Data    	=" + m_NotesData);
-		getLog().info("TargetDB Name 	=" + m_TargetDBName);
-		getLog().info("ODP           	=" + m_ODPDirectory);
-		getLog().info("Updatesite    	=" + m_Features);
-		getLog().info("Target Directory =" + m_TargetDir);
+		getLog().info("====================================");
+		getLog().info(buildSetupOutput("Designer Exec", m_DesignerExec));
+		getLog().info(buildSetupOutput("Notes Data", m_NotesData));
+		getLog().info(buildSetupOutput("TargetDB Name", m_TargetDBName));
+		getLog().info(buildSetupOutput("ODP", m_ODPDirectory));
+		getLog().info(buildSetupOutput("Features", m_Features == null ? "<none>" : "" + m_Features.size()));
+		getLog().info(buildSetupOutput("Target Directory", m_TargetDir == null ? "<no targetdir!" : "" + m_TargetDir.getAbsolutePath()));
 		if (StringUtils.isEmpty(m_NotesData) || StringUtils.isEmpty(m_TargetDBName) || StringUtils.isEmpty(m_ODPDirectory)) {
 			getLog().info("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata)");
 			throw new MojoExecutionException("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata, ddehd.odpdirectory)");
@@ -95,6 +79,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	}
 
 	private void moveNSFtoTargetDirectory() throws MojoExecutionException {
+		getLog().info(buildReportOutput("copyNSF", "Move "+m_TargetDBName));
 		StringBuilder sbNotesData = new StringBuilder();
 		sbNotesData.append(m_NotesData);
 		sbNotesData.append("\\");
@@ -111,6 +96,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 		} else {
 			throw new MojoExecutionException("Build failed, no " + m_TargetDBName + " found in " + m_NotesData);
 		}
+		getLog().info(buildReportOutput("copyNSF", "Move "+m_TargetDBName + " finished."));
 
 	}
 
@@ -149,7 +135,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 
 	private void installFeature() throws MojoExecutionException {
 		if (m_Features != null && m_Features.size() > 0) {
-			getLog().info("- installFeatures: Build File " + m_TargetDir + "/" + INSTALL_TXT);
+			getLog().info(buildReportOutput("installFeatures", "Build File target/" + INSTALL_TXT));
 			File fileDeployUS = createInstructionFile(INSTALL_TXT);
 			try {
 				PrintWriter pw = new PrintWriter(fileDeployUS);
@@ -169,15 +155,15 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 				}
 				pw.println("exit,100");
 				pw.close();
-				getLog().info("- installFeatures: Build File " + m_TargetDir + "/" + INSTALL_TXT + " finished.");
+				getLog().info(buildReportOutput("installFeatures", "Build File target/" + INSTALL_TXT + " prepared."));
 				executeDesigner(fileDeployUS.getAbsolutePath());
 
 			} catch (Exception ex) {
 				throw new MojoExecutionException("Headless Designer Plugin: Could not create " + INSTALL_TXT, ex);
 			}
-			getLog().info("- installFeatures: DONE");
+			getLog().info(buildReportOutput("installFeatures", "Executed"));
 		} else {
-			getLog().info("- installFeatures: SKIPPED");
+			getLog().info(buildReportOutput("installFeatures", "SKIPPED"));
 		}
 
 	}
@@ -192,7 +178,7 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 
 	private void enableFeatures() throws MojoExecutionException {
 		if (m_Features != null && m_Features.size() > 0) {
-			getLog().info("- enableFeatures: Build File " + m_TargetDir + "/" + ENABLE_TXT);
+			getLog().info(buildReportOutput("enableFeatures", "Build File target/" + ENABLE_TXT));
 			File fileActivate = createInstructionFile(ENABLE_TXT);
 			try {
 				PrintWriter pw = new PrintWriter(fileActivate);
@@ -210,21 +196,21 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 				}
 				pw.println("exit");
 				pw.close();
-				getLog().info("- enableFeatures: Build File " + m_TargetDir + "/" + ENABLE_TXT + " finished.");
+				getLog().info(buildReportOutput("enableFeatures", "Build File target/" + ENABLE_TXT + " prepared."));
 				executeDesigner(fileActivate.getAbsolutePath());
 
 			} catch (Exception ex) {
 				throw new MojoExecutionException("Headless Designer Plugin: Could not create" + ENABLE_TXT, ex);
 			}
-			getLog().info("- enableFeatures: DONE");
+			getLog().info(buildReportOutput("enableFeatures", "Executed"));
 		} else {
-			getLog().info("- enableFeatures: SKIPPED");
+			getLog().info(buildReportOutput("enableFeatures", "SKIPPED"));
 		}
 
 	}
 
 	private void buildApplication() throws MojoExecutionException {
-		getLog().info("- buildApplication: Build File " + m_TargetDir + "/" + BUILD_TXT);
+		getLog().info(buildReportOutput("buildApplication", "Build File target/" + BUILD_TXT));
 		File fileBuild = createInstructionFile(BUILD_TXT);
 		try {
 			PrintWriter pw = new PrintWriter(fileBuild);
@@ -234,18 +220,18 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 			pw.println("clean");
 			pw.println("exit,100");
 			pw.close();
-			getLog().info("- buildApplication: Build File " + m_TargetDir + "/" + BUILD_TXT + " finished.");
+			getLog().info(buildReportOutput("buildApplication", "Build File target/" + BUILD_TXT + " prepared."));
 			executeDesigner(fileBuild.getAbsolutePath());
 
 		} catch (Exception ex) {
 			throw new MojoExecutionException("Headless Designer Plugin: Could not create " + BUILD_TXT, ex);
 		}
-		getLog().info("- buildApplication: DONE");
+		getLog().info(buildReportOutput("buildApplication", "Executed"));
 	}
 
 	private void disableFeatures() throws MojoExecutionException {
 		if (m_Features != null && m_Features.size() > 0) {
-			getLog().info("- disableFeatures: Build File " + m_TargetDir + "/" + DISABLE_TXT);
+			getLog().info(buildReportOutput("disableFeatures", "Build File target/" + DISABLE_TXT));
 			File fileDisable = createInstructionFile(DISABLE_TXT);
 			try {
 				PrintWriter pw = new PrintWriter(fileDisable);
@@ -264,22 +250,22 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 				}
 				pw.println("exit,100");
 				pw.close();
-				getLog().info("- disableFeatures: Build File " + m_TargetDir + "/" + DISABLE_TXT + " finished.");
+				getLog().info(buildReportOutput("disableFeatures", "Build File target/" + DISABLE_TXT + " prepared."));
 				executeDesigner(fileDisable.getAbsolutePath());
 
 			} catch (Exception ex) {
 				throw new MojoExecutionException("Headless Designer Plugin: Could not create " + DISABLE_TXT, ex);
 			}
-			getLog().info("- disableFeatures: DONE");
+			getLog().info(buildReportOutput("disableFeatures", "Executed"));
 		} else {
-			getLog().info("- disableFeatures: SKIPPED");
+			getLog().info(buildReportOutput("disableFeatures", "SKIPPED"));
 		}
 
 	}
 
 	private void uninstallFeatures() throws MojoExecutionException {
 		if (m_Features != null && m_Features.size() > 0) {
-			getLog().info("- uninstallFeatures: Build File " + m_TargetDir + "/" + UNINSTALL_TXT);
+			getLog().info(buildReportOutput("uninstallFeatures", "Build File target/" + UNINSTALL_TXT));
 			File fileUninstall = createInstructionFile(UNINSTALL_TXT);
 			try {
 				PrintWriter pw = new PrintWriter(fileUninstall);
@@ -298,15 +284,15 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 				}
 				pw.println("exit,100");
 				pw.close();
-				getLog().info("- uninstallFeatures: Build File " + m_TargetDir + "/" + UNINSTALL_TXT + " finished.");
+				getLog().info(buildReportOutput("uninstallFeatures", "Build File target/" + UNINSTALL_TXT + " prepared."));
 				executeDesigner(fileUninstall.getAbsolutePath());
 
 			} catch (Exception ex) {
 				throw new MojoExecutionException("Headless Designer Plugin: Could not create " + UNINSTALL_TXT, ex);
 			}
-			getLog().info("- uninstallFeatures: DONE");
+			getLog().info(buildReportOutput("uninstallFeatures", "Executed"));
 		} else {
-			getLog().info("- uninstallFeatures: SKIPPED");
+			getLog().info(buildReportOutput("uninstallFeatures", "SKIPPED"));
 		}
 
 	}
@@ -337,5 +323,5 @@ public class HeadlessDesignerBuilder extends AbstractMojo {
 	public void setFeatures(List<Feature> features) {
 		m_Features = features;
 	}
-
+	
 }
