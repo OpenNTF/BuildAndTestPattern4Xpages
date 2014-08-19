@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><note class="form" maintenanceversion="1.0" replicaid="C1257D38007B6122" version="9.0" xmlns="http://www.lotus.com/dxl">
+<noteinfo noteid="14e" sequence="8" unid="DA230D0FCCC69B84C1257D38007AC32F">
+<created><datetime dst="true">20140819T002053,59+02</datetime></created>
+<modified><datetime dst="true">20140819T171054,93+02</datetime></modified>
+<revised><datetime dst="true">20140819T171054,92+02</datetime></revised>
+<lastaccessed><datetime dst="true">20140819T171054,93+02</datetime></lastaccessed>
+<addedtofile><datetime dst="true">20140819T002738,25+02</datetime></addedtofile></noteinfo>
+<updatedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></updatedby>
+<wassignedby><name>CN=Christian Guedemann/O=WGC/C=CH</name></wassignedby>
+<item name="$Flags"><text>34567Cg~[</text></item>
+<item name="$TITLE"><text>org/openntf/junit/example/TestMock.java</text></item>
+
+<item name="$DesignerVersion"><text>8.5.3</text></item>
+
+
+<item name="$FileNames" sign="true"><text>org/openntf/junit/example/TestMock.java</text></item>
+
+</note>

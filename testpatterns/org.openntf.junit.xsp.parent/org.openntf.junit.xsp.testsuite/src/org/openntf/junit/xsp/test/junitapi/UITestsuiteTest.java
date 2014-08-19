@@ -36,8 +36,8 @@ public class UITestsuiteTest {
 	@Test
 	public void testSetDownloadXMLName() {
 		UITestsuite testsuite = new UITestsuite();
-		testsuite.setDownloadName("TEST-All.xml");
-		assertNotNull(testsuite.getDownloadName());
+		testsuite.setDownloadFile("TEST-All.xml");
+		assertNotNull(testsuite.getDownloadFile());
 	}
 
 	@Test

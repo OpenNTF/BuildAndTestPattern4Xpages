@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core" xmlns:xc="http://www.ibm.com/xsp/custom"
+	xmlns:junit="http://www.openntf.org/xsp/junit">
+
+	<xc:cc_application navigationPath="/home/junit"
+		pageTitle="JUnit Sample Page - With errors and failures">
+		<xp:this.facets>
+			<xp:panel xp:key="facetRight"><xp:link escape="true" text="download as XML" id="lnkDownload" value="junit.xsp/TEST-Failures.xml"></xp:link></xp:panel>
+			<xp:panel xp:key="facetLeft">
+				<xc:cc_nav></xc:cc_nav></xp:panel>
+			<xp:panel xp:key="facetMiddle">
+				<junit:testsuite id="testuite1"
+					downloadFile="TEST-Failures.xml">
+					<junit:this.testClasses>
+						<xp:value>
+							org.openntf.junit.example.Green1Test
+						</xp:value>
+						<xp:value>
+							org.openntf.junit.example.TestMock
+						</xp:value>
+						<xp:value>
+							org.openntf.junit.example.Green2Test
+						</xp:value>
+						<xp:value>
+							org.openntf.junit.example.TestMock2
+						</xp:value>
+					</junit:this.testClasses>
+				</junit:testsuite>
+			</xp:panel>
+		</xp:this.facets>
+	</xc:cc_application>
+
+</xp:view>

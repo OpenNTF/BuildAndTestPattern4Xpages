@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xp:view xmlns:xp="http://www.ibm.com/xsp/core"
+	xmlns:xe="http://www.ibm.com/xsp/coreex">
+
+	<xe:applicationLayout id="applicationLayout1">
+		<xp:callback facetName="facetMiddle" id="facetMiddle"></xp:callback>
+		<xe:this.facets>
+			<xp:callback facetName="facetRight" id="facetRight"
+				xp:key="RightColumn">
+			</xp:callback>
+			<xp:callback facetName="facetLeft" id="facetLeft"
+				xp:key="LeftColumn">
+			</xp:callback>
+		</xe:this.facets>
+		<xe:this.configuration>
+			<xe:oneuiApplication titleBarName="JUNIT 4 XSP"
+				productLogoHeight="20px" productLogoWidth="100px"
+				placeBarName="#{javascript:compositeData.pageTitle}"
+				navigationPath="#{javascript:compositeData.navigationPath}"
+				legalText="(c) by WebGate Consulting AG, 2012" footer="false">
+				<xe:this.footerLinks>
+				</xe:this.footerLinks>
+				<xe:this.titleBarTabs>
+					<xe:pageTreeNode label="Home" page="/junit.xsp"
+						selection="/home/.*">
+
+					</xe:pageTreeNode>
+				</xe:this.titleBarTabs>
+				<xe:this.bannerApplicationLinks>
+					<xe:basicLeafNode label="OpenNTF"
+						href="http://www.openntf.org">
+					</xe:basicLeafNode>
+					<xe:basicLeafNode label="WebGate Consulting AG"
+						href="http://www.webgate.biz">
+					</xe:basicLeafNode>
+
+				</xe:this.bannerApplicationLinks>
+				<xe:this.bannerUtilityLinks>
+
+				</xe:this.bannerUtilityLinks>
+				<xe:this.placeBarActions>
+				</xe:this.placeBarActions>
+
+			</xe:oneuiApplication>
+		</xe:this.configuration>
+	</xe:applicationLayout>
+	</xp:view>
