@@ -4,11 +4,6 @@ Copyright 2014 WebGate Consulting AG
 This product includes software contributed to 
 OpenNTF Alliance (http://www.OpenNTF.org/)
 
-The example database uses:
-    - the sample data generation from the ExtLib - example database ("http://exlib.openntf.org") under Apache V2.0 (http://www.apache.org/licenses/)
-
-    - SampleDataUtil.java from Philippe Riand which is part of the ExtLib - example database ("http://exlib.openntf.org") under Apache V2.0 (http://www.apache.org/licenses/)
-
 
 List of third party software used in this project:
 
