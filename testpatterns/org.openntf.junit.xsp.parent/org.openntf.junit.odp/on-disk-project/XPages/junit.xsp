@@ -24,7 +24,7 @@
 						<xp:value>
 							org.openntf.junit.example.TestMock2
 						</xp:value>
-					</junit:this.testClasses>
+					<xp:value>org.openntf.junit.example.ShareTest</xp:value></junit:this.testClasses>
 				</junit:testsuite>
 			</xp:panel>
 		</xp:this.facets>

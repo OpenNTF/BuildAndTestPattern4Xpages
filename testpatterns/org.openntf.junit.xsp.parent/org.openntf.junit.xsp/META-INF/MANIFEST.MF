@@ -13,5 +13,10 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Activator: org.openntf.junit.xsp.JUnitXSPActivator
 Export-Package: org.openntf.junit.xsp,
- org.openntf.junit.xsp.junit4
+ org.openntf.junit.xsp.component,
+ org.openntf.junit.xsp.easymock,
+ org.openntf.junit.xsp.ibrary,
+ org.openntf.junit.xsp.junit4,
+ org.openntf.junit.xsp.junit4.report,
+ org.openntf.junit.xsp.renderkit.html_extended
 Bundle-ClassPath: .
