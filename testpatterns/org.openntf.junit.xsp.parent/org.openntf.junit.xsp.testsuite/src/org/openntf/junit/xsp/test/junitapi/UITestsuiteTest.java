@@ -15,11 +15,17 @@
  */
 package org.openntf.junit.xsp.test.junitapi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.*;
 
 import java.util.Arrays;
 
 import javax.faces.FacesException;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.junit.Test;
 import org.openntf.junit.xsp.component.UITestsuite;
@@ -59,6 +65,22 @@ public class UITestsuiteTest {
 			return;
 		}
 		assertFalse("No excetion!", true);
+	}
+
+	@Test
+	public void testHandlesForDownloadName() {
+		FacesContext fc = createNiceMock(FacesContext.class);
+		ExternalContext ex = createNiceMock(ExternalContext.class);
+		expect(fc.getExternalContext()).andReturn(ex).times(3);
+		expect(ex.getRequestPathInfo()).andReturn("/TEST-Result.xml").times(3);
+		replay(fc);
+		replay(ex);
+		UITestsuite testsuite = new UITestsuite();
+		assertFalse(testsuite.handles(fc));
+		testsuite.setDownloadFile("TEST-Result.xml");
+		assertTrue(testsuite.handles(fc));
+		testsuite.setDownloadFile("/TEST-Result.xml");
+		assertTrue(testsuite.handles(fc));
 	}
 
 }

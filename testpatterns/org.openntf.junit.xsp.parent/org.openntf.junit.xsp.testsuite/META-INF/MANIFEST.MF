@@ -6,7 +6,10 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: WebGate Consulting AG
 Fragment-Host: org.openntf.junit.xsp
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.junit;version="4.11.0",
+Import-Package: org.easymock,
+ org.easymock.internal,
+ org.easymock.internal.matchers,
+ org.junit;version="4.11.0",
  org.junit.experimental;version="4.11.0",
  org.junit.experimental.categories;version="4.11.0",
  org.junit.experimental.max;version="4.11.0",
