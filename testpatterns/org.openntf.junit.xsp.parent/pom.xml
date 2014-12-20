@@ -7,7 +7,7 @@
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
-		<tycho-version>0.21.0</tycho-version>
+		<tycho-version>0.19.0</tycho-version>
 		<compiler>1.6</compiler>
 		<license.failIfMissing>false</license.failIfMissing>
 		<lic.file>${project.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
@@ -29,10 +29,10 @@
 			<url>${notes-platform}</url>
 		</repository>
 		<repository>
-			<id>eclipse</id>
-			<layout>p2</layout>
+			<id>kepler</id>
 			<url>http://download.eclipse.org/releases/kepler/</url>
-		</repository>
+			<layout>p2</layout>
+		</repository>		
 	</repositories>
 	<build>
 		<plugins>
@@ -45,8 +45,6 @@
 					<source>${compiler}</source>
 					<target>${compiler}</target>
 					<verbose>true</verbose>
-					<fork>true</fork>
-					<executable>${notes_jvm}</executable>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -112,6 +110,22 @@
 						</environment>
 					</environments>
 					<pomDependencies>consider</pomDependencies>
+					<dependency-resolution>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>com.ibm.notes.java.api.win32.linux</id>
+								<versionRange>[9.0.1,9.0.2)</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>com.ibm.designer.lib.jsf</id>
+								<versionRange>[9.0.1,9.0.2)</versionRange>
+							</requirement>
+
+						</extraRequirements>
+					</dependency-resolution>
+
 				</configuration>
 			</plugin>
 
@@ -209,7 +223,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 
 		</plugins>
 
@@ -322,4 +336,5 @@
 			<version>3.0.15</version>
 		</dependency>
 	</dependencies>
+	<name>JUnit4XPages Plugin</name>
 </project>

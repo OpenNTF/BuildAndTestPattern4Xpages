@@ -20,25 +20,20 @@
 						<junit-test-running>yes</junit-test-running>
 					</systemProperties>
 					<useUIHarness>false</useUIHarness>
+					<showEclipseLog>true</showEclipseLog>
 					<providerHint>junit47</providerHint>
 					<excludes>
 						<exlude>**/Abstract*Test.class</exlude>
 						<exlude>**/Abstract*TestCase.class</exlude>
 						<exlude>**/*$*</exlude>
 						<exlude>**/TestMoc*.class</exlude>
-						<!-- Cannot load the JSF stack / but should. No time to investigate -->
-						<exlude>**/UITestsuiteTest.class</exlude>
-					</excludes>
-					<dependencies>
-						<dependency>
-							<type>eclipse-feature</type>
-							<artifactId>com.ibm.designer.domino.lib.xsp.feature</artifactId>
-							<version>9.0.1</version>
-						</dependency>
-					</dependencies>
+						</excludes>
+						<!-- <providerHint>junit47</providerHint> <excludes> <exlude>**/Abstract*Test.class</exlude> 
+							<exlude>**/Abstract*TestCase.class</exlude> <exlude>**/*$*</exlude> <exlude>**/TestMoc*.class</exlude> 
+							Cannot load the JSF stack / but should. No time to investigate <exlude>**/UITestsuiteTest.class</exlude> 
+							</excludes> -->
 				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 	<properties>
@@ -46,6 +41,6 @@
 		<!-- Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=397015 -->
 		<sonar.sources></sonar.sources>
 		<sonar.tests>src</sonar.tests>
-		
+
 	</properties>
 </project>

@@ -21,6 +21,8 @@ import java.security.PrivilegedAction;
 import org.easymock.EasyMock;
 
 public class EasyMockWrapper {
+	private EasyMockWrapper() {
+	}
 
 	public static <T> T createNiceMock(final Class<T> myClass) {
 		return AccessController.doPrivileged(new PrivilegedAction<T>() {

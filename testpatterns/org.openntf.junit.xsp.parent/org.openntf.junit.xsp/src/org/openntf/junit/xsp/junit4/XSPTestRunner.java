@@ -29,6 +29,8 @@ import org.openntf.junit.xsp.junit4.report.XSPResult;
 import org.openntf.junit.xsp.junit4.report.XSPTestSuite;
 
 public class XSPTestRunner {
+	private XSPTestRunner() {
+	}
 
 	public static XSPResult testSingleClass(Class<?> testClass) {
 		ConsoleLogRecorder recorder = new ConsoleLogRecorder();

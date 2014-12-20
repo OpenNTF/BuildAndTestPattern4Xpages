@@ -59,12 +59,12 @@ public class TestSuiteRenderer extends FacesRenderer {
 		String id = testsuite.getClientId(context);
 		rw.startElement("div", testsuite);
 		rw.writeAttribute("id", id, null);
-		writeSummary(context, rw, id, testsuite, testResult);
-		writeResults(context, rw, id, testsuite, testResult);
+		writeSummary( rw, id, testsuite, testResult);
+		writeResults(rw, id, testsuite, testResult);
 		rw.endElement("div");
 	}
 
-	private void writeSummary(FacesContext context, ResponseWriter rw, String id, UITestsuite testsuite, XSPTestSuite testResult) throws IOException {
+	private void writeSummary(ResponseWriter rw, String id, UITestsuite testsuite, XSPTestSuite testResult) throws IOException {
 		rw.startElement("table", testsuite);
 		rw.writeAttribute("id", id + "_summary", null);
 		rw.writeAttribute("class", "lotusTable", null);
@@ -120,18 +120,18 @@ public class TestSuiteRenderer extends FacesRenderer {
 		rw.endElement("td");
 	}
 
-	private void writeResults(FacesContext context, ResponseWriter rw, String id, UITestsuite testsuite, XSPTestSuite testResult) throws IOException {
+	private void writeResults( ResponseWriter rw, String id, UITestsuite testsuite, XSPTestSuite testResult) throws IOException {
 		int nCounter = 0;
 		for (XSPResult testcase : testResult.getResults()) {
 			String idSub = id + "_tc_" + nCounter;
-			writeResultSummary(rw, idSub + "_details", testsuite, testcase, testResult);
-			writeDetailResults(context, rw, idSub + "_details", testcase);
-			writeSystemOut(context, rw, idSub + "_sysout", testcase);
+			writeResultSummary(rw, idSub + "_details", testsuite, testcase);
+			writeDetailResults( rw, idSub + "_details", testcase);
+			writeSystemOut( rw, idSub + "_sysout", testcase);
 			nCounter++;
 		}
 	}
 
-	private void writeResultSummary(ResponseWriter rw, String id, UITestsuite testsuite, XSPResult testcase, XSPTestSuite testResult) throws IOException {
+	private void writeResultSummary(ResponseWriter rw, String id, UITestsuite testsuite, XSPResult testcase) throws IOException {
 		rw.startElement("table", null);
 		rw.writeAttribute("style", "margin-top:44px;", null);
 		rw.writeAttribute("class", "lotusTable", null);
@@ -166,7 +166,7 @@ public class TestSuiteRenderer extends FacesRenderer {
 		return TestStatus.SUCCESS;
 	}
 
-	private void writeDetailResults(FacesContext context, ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
+	private void writeDetailResults(ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
 		rw.startElement("div", null);
 		if (getTestStatus(testcase) == TestStatus.SUCCESS) {
 			rw.writeAttribute("style", "margin-left:20px;display:none", null);
@@ -251,7 +251,7 @@ public class TestSuiteRenderer extends FacesRenderer {
 		rw.endElement("td");
 	}
 
-	private void writeSystemOut(FacesContext context, ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
+	private void writeSystemOut(ResponseWriter rw, String idSub, XSPResult testcase) throws IOException {
 		rw.startElement("div", null);
 		rw.writeAttribute("style", "margin-left:20px", null);
 		rw.startElement("a", null);
