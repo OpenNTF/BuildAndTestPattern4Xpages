@@ -36,7 +36,7 @@ public class TestEntry {
 		public Object getICONUrl() {
 			return m_IconURL;
 		}
-	};
+	}
 
 	private final String m_ClassName;
 	private final String m_MethodName;

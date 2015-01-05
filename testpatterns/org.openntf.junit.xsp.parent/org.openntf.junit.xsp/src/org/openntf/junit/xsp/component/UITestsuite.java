@@ -123,7 +123,6 @@ public class UITestsuite extends UIComponentBase implements FacesAjaxComponent {
 				for (String className : getTestClasses()) {
 					try {
 						Class<?> testClass = Thread.currentThread().getContextClassLoader().loadClass(className);
-						// Class<?> testClass = Class.forName(className);
 						classes.add(testClass);
 					} catch (Exception ex) {
 						throw new FacesException(className + " not found!");

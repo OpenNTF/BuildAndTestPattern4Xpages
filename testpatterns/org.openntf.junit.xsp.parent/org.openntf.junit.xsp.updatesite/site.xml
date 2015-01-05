@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.openntf.junit.xsp.feature_1.0.0.qualifier.jar" id="org.openntf.junit.xsp.feature" version="1.0.0.qualifier">
+   <feature url="features/org.openntf.junit.xsp.feature_1.1.0.qualifier.jar" id="org.openntf.junit.xsp.feature" version="1.1.0.qualifier">
       <category name="JUnit4XSP"/>
    </feature>
    <category-def name="JUnit4XSP" label="JUnit4XSP"/>

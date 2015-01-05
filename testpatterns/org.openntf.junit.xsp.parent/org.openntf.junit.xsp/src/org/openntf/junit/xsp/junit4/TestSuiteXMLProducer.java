@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+import javax.faces.FacesException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -42,7 +43,7 @@ public enum TestSuiteXMLProducer {
 					marshaller.marshal(result, out);
 					return out;
 				} catch (Exception ex) {
-					throw new RuntimeException("Error in build XMLStream.", ex);
+					throw new FacesException("Error in build XMLStream.", ex);
 				}
 			}
 		});
@@ -63,7 +64,7 @@ public enum TestSuiteXMLProducer {
 					marshaller.marshal(testSuite, out);
 					return out;
 				} catch (Exception ex) {
-					throw new RuntimeException("Error in build XMLStream.", ex);
+					throw new FacesException("Error in build XMLStream.", ex);
 				}
 			}
 		});

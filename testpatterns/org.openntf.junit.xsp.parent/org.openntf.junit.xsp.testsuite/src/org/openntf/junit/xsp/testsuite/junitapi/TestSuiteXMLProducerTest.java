@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.openntf.junit.xsp.test.junitapi;
+package org.openntf.junit.xsp.testsuite.junitapi;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,7 +41,7 @@ import org.openntf.junit.xsp.junit4.TestSuiteXMLProducer;
 import org.openntf.junit.xsp.junit4.XSPTestRunner;
 import org.openntf.junit.xsp.junit4.report.XSPResult;
 import org.openntf.junit.xsp.junit4.report.XSPTestSuite;
-import org.openntf.junit.xsp.test.junitapi.helpers.SimpleErrorHandler;
+import org.openntf.junit.xsp.testsuite.junitapi.helpers.SimpleErrorHandler;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock;
 import org.openntf.junit.xsp.testsuite.junitapi.tests.TestMock2;
 import org.w3c.dom.Document;

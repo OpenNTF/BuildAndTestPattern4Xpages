@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openntf.junit</groupId>
 	<artifactId>junit.xsp.parent</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho-version>0.19.0</tycho-version>
@@ -12,9 +12,14 @@
 		<license.failIfMissing>false</license.failIfMissing>
 		<lic.file>${project.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<ddehd.designerexec>${notes-designer}</ddehd.designerexec>
 		<ddehd.targetdbname>${notes-nsf}</ddehd.targetdbname>
 		<ddehd.notesdata>${notes-data}</ddehd.notesdata>
+		<sonar.language>java</sonar.language>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 	</properties>
 
 	<repositories>
@@ -24,10 +29,10 @@
 			<url>${notes-platform}</url>
 		</repository>
 		<repository>
-			<id>eclipse</id>
-			<layout>p2</layout>
+			<id>kepler</id>
 			<url>http://download.eclipse.org/releases/kepler/</url>
-		</repository>
+			<layout>p2</layout>
+		</repository>		
 	</repositories>
 	<build>
 		<plugins>
@@ -40,8 +45,6 @@
 					<source>${compiler}</source>
 					<target>${compiler}</target>
 					<verbose>true</verbose>
-					<fork>true</fork>
-					<executable>${notes_jvm}</executable>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -107,6 +110,22 @@
 						</environment>
 					</environments>
 					<pomDependencies>consider</pomDependencies>
+					<dependency-resolution>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>com.ibm.notes.java.api.win32.linux</id>
+								<versionRange>[9.0.1,9.0.2)</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-plugin</type>
+								<id>com.ibm.designer.lib.jsf</id>
+								<versionRange>[9.0.1,9.0.2)</versionRange>
+							</requirement>
+
+						</extraRequirements>
+					</dependency-resolution>
+
 				</configuration>
 			</plugin>
 
@@ -181,6 +200,30 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.1.201405082137</version>
+				<configuration>
+					<includes>
+						<include>org.openntf.junit.xsp.*</include>
+					</includes>
+					<destFile>${project.basedir}/../target/jacoco.exec</destFile>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 
 		</plugins>
 
@@ -213,6 +256,23 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jacoco</groupId>
+										<artifactId>
+											jacoco-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.7.1.201405082137,)
+										</versionRange>
+										<goals>
+											<goal>prepare-agent</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -276,4 +336,5 @@
 			<version>3.0.15</version>
 		</dependency>
 	</dependencies>
+	<name>JUnit4XPages Plugin</name>
 </project>
