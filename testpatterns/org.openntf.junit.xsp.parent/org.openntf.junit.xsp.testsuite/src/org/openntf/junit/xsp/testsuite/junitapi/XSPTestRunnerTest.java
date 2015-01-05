@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.openntf.junit.xsp.test.junitapi;
+package org.openntf.junit.xsp.testsuite.junitapi;
 
 import static org.junit.Assert.*;
 

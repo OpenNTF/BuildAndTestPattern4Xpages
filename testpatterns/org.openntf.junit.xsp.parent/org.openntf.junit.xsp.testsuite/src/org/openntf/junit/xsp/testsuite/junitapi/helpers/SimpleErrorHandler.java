@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-package org.openntf.junit.xsp.test.junitapi.helpers;
+package org.openntf.junit.xsp.testsuite.junitapi.helpers;
 
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;

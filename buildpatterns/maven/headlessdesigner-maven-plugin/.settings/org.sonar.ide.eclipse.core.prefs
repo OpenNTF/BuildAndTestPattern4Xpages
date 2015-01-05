@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+extraProperties=sonar.host.url\=https\://sonar.webgate.biz\r\nsonar.jdbc.password\=sonar\r\nsonar.jdbc.username\=sonar\r\nsonar.jdbc.url\=jdbc\:mysql\://sonar-intern.webgate.biz\:3306/sonar?useUnicode\=true&characterEncoding\=utf8
+projectKey=org.openntf.maven\:headlessdesigner-maven-plugin
+serverUrl=http\://localhost\:9000
+version=2
