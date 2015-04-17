@@ -19,7 +19,6 @@ package org.openntf.xsp.starter.application;
 import javax.faces.application.Application;
 
 import org.openntf.xsp.starter.Activator;
-import org.openntf.xsp.starter.listeners.ApplicationListener;
 import org.openntf.xsp.starter.listeners.SessionListener;
 import org.openntf.xsp.starter.listeners.VFSEvent;
 
@@ -30,7 +29,6 @@ import com.ibm.xsp.application.DesignerApplicationEx;
 
 public class StarterApplicationEx extends DesignerApplicationEx {
 	private final static boolean _debug = Activator._debug;
-	private final ApplicationListener _localAppListener = new ApplicationListener();
 	private final SessionListener _localSessionListener = new SessionListener();
 	private final VFSEvent _vfsEvent = new VFSEvent();
 	static {
@@ -75,8 +73,6 @@ public class StarterApplicationEx extends DesignerApplicationEx {
 	}
 
 	private void initListeners() {
-		this.addApplicationListener(_localAppListener);
-		_localAppListener.applicationCreated(this);
 		this.addSessionListener(_localSessionListener);
 		com.ibm.designer.runtime.Application designApp = getDesignerApplication();
 		@SuppressWarnings("unused")

@@ -20,8 +20,11 @@ import org.openntf.xsp.starter.Activator;
 
 import com.ibm.xsp.application.ApplicationEx;
 
-public class ApplicationListener implements com.ibm.xsp.application.events.ApplicationListener {
-	public final static boolean ATTACH_LISTENER = true; // change this to false if you don't want to bother.
+/**
+ * @deprecated Use {@link ApplicationListener2} instead.
+ */
+@Deprecated
+public class ApplicationListener extends AbstractListener implements com.ibm.xsp.application.events.ApplicationListener {
 	private final static boolean _debug = Activator._debug;
 	static {
 		if (_debug)
@@ -40,11 +43,6 @@ public class ApplicationListener implements com.ibm.xsp.application.events.Appli
 	public void applicationDestroyed(ApplicationEx application) {
 		_debugOut("applicationDestroyed triggered " + application.getApplicationId());
 		// your code goes here
-	}
-
-	private void _debugOut(String message) {
-		if (_debug)
-			System.out.println(getClass().getName() + " " + message);
 	}
 
 }
