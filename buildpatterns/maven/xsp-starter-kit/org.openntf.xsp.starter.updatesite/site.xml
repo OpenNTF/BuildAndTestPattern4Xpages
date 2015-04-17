@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="XSP Startker Kit" url="http://www.openntf.org/internal/home.nsf/project.xsp?name=XSP%20Starter%20Kit">
+      An XPages demonstration library
+   </description>
+   <feature url="features/org.openntf.xsp.starter.feature_2.0.0.qualifier.jar" id="org.openntf.xsp.starter.feature" version="2.0.0.qualifier">
+      <category name="XSP Starter Kit"/>
+   </feature>
+   <category-def name="XSP Startker Kit" label="XSP Starter Kit"/>
+</site>
