@@ -1,0 +1,1 @@
+This project contains code from the XSP Starter Kit from OpenNTF, which is copyright 2011 GBS Inc. and is licensed under the Apache 2 license. http://www.openntf.org/internal/home.nsf/project.xsp?name=XSP%20Starter%20Kit
