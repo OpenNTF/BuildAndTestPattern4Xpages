@@ -2,20 +2,27 @@ package org.openntf.maven;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.util.FileUtils;
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 
 @Mojo(name = "ddehd")
@@ -32,6 +39,13 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 	private static final String INSTALL_TXT = "install.txt";
 
 	private final Pattern NOTESPATTERN = Pattern.compile("(notes2.exe.*? )");
+	
+	private static final ThreadLocal<DateFormat> NOTES_DATE_FORMAT = new ThreadLocal<DateFormat>() {
+		@Override protected DateFormat initialValue() {
+			// 20160307T183605,00-05
+			return new SimpleDateFormat("yyyyMMdd");
+		};
+	};
 
 	/**
 	 * Path to the designer.exe (e.g. C:\Program Files\IBM\Notes\Designer.exe)
@@ -45,11 +59,29 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 	private String m_NotesData;
 	@Parameter(property = "ddehd.odpdirectory")
 	private String m_ODPDirectory;
+	
+	/**
+	 * The template name to use. Setting this property causes the build process to create
+	 * a shared field name "$TemplateBuild"
+	 */
+	@Parameter
+	private String templateBuildName;
+	/**
+	 * The template version number to use. Setting this property in addition to
+	 * <code>templateBuildName</code> will cause this to be set in the "$TemplateBuild"
+	 * shared field as the version. If not set, it will use the Maven project's version
+	 * number.
+	 */
+	@Parameter
+	private String templateBuildVersion;
+	
+	@Parameter(defaultValue="${project}", readonly=true, required=true)
+	private MavenProject project;
 
 	/**
 	 * Path to File with the build instructions for the headless designer. If
-	 * this value is set, all other values like updateSites, odpdirectory and
-	 * targetdbname will be ignored.
+	 * this value is set, all other values like updateSites, odpdirectory,
+	 * templateBuildName, templateBuildVersion, and targetdbname will be ignored.
 	 */
 	@Parameter(property = "ddehd.filename")
 	private String m_Filename;
@@ -66,10 +98,30 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 			getLog().info("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata)");
 			throw new MojoExecutionException("DDE HeadlessDesigner Plugin miss some configuration (ddehd.targetdbname, ddehd.notesdata, ddehd.odpdirectory)");
 		}
+		
 		if (StringUtils.isEmpty(m_Filename)) {
+			// Copy the ODP to a temporary directory
+			File origOdp = new File(m_ODPDirectory);
+			String buildDir = project.getBuild().getDirectory();
+			File tempOdp = new File(buildDir, "odp");
+			try {
+				if(tempOdp.exists()) {
+					FileUtils.deleteDirectory(tempOdp);
+				}
+				FileUtils.copyDirectory(origOdp, tempOdp);
+			} catch(IOException e) {
+				throw new MojoExecutionException("Failed to copy ODP to temporary directory", e);
+			}
+			
+			// Create/overwrite the $TemplateBuild field if needed
+			if(StringUtils.isNotEmpty(templateBuildName)) {
+				getLog().debug("Want to build $TemplateBuild for name=" + templateBuildName + ", version=" + templateBuildVersion);
+				configureTemplateBuild(tempOdp);
+			}
+			
 			installFeature();
 			enableFeatures();
-			buildApplication();
+			buildApplication(tempOdp);
 			disableFeatures();
 			uninstallFeatures();
 			moveNSFtoTargetDirectory();
@@ -131,6 +183,46 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 
 	private void customBuild() throws MojoExecutionException {
 		executeDesigner(m_Filename);
+	}
+	
+	private void configureTemplateBuild(File odpPath) throws MojoExecutionException {
+		File sharedFields = new File(odpPath, "SharedElements" + File.separator + "Fields");
+		sharedFields.mkdirs();
+		File templateBuild = new File(sharedFields, "$TemplateBuild.field");
+		if(templateBuild.exists()) {
+			templateBuild.delete();
+		}
+		
+		
+		InputStream templateXmlStream = getClass().getResourceAsStream("/templateBuild.xml");
+		try {
+			String templateXml = IOUtils.toString(templateXmlStream, "UTF-8");
+			
+			
+			String templateName = templateBuildName;
+			String templateBuildVersion = this.templateBuildVersion;
+			if(StringUtils.isEmpty(templateBuildVersion)) {
+				templateBuildVersion = project.getVersion();
+			}
+			String templateBuildDate = NOTES_DATE_FORMAT.get().format(new Date());
+			
+			templateXml = templateXml
+					.replace("{{TemplateBuildName}}", StringEscapeUtils.escapeXml(templateName))
+					.replace("{{TemplateBuildDate}}", StringEscapeUtils.escapeXml(templateBuildDate))
+					.replace("{{TemplateBuildVersion}}", StringEscapeUtils.escapeXml(templateBuildVersion));
+			
+			FileOutputStream fos = new FileOutputStream(templateBuild);
+			try {
+				IOUtils.write(templateXml, fos);
+			} finally {
+				IOUtils.closeQuietly(fos);
+			}
+			
+		} catch(IOException e) {
+			throw new MojoExecutionException("Failed to read templateBuild.xml", e);
+		} finally {
+			IOUtils.closeQuietly(templateXmlStream);
+		}
 	}
 
 	private void installFeature() throws MojoExecutionException {
@@ -209,13 +301,13 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 
 	}
 
-	private void buildApplication() throws MojoExecutionException {
+	private void buildApplication(File odpPath) throws MojoExecutionException {
 		getLog().info(buildReportOutput("buildApplication", "Build File target/" + BUILD_TXT));
 		File fileBuild = createInstructionFile(BUILD_TXT);
 		try {
 			PrintWriter pw = new PrintWriter(fileBuild);
 			pw.println("config,true,true");
-			pw.println("importandbuild," + m_ODPDirectory + "/.project," + m_TargetDBName);
+			pw.println("importandbuild," + odpPath.getAbsolutePath() + "/.project," + m_TargetDBName);
 			pw.println("wait," + m_TargetDBName + ",3");
 			pw.println("clean");
 			pw.println("exit,100");
@@ -324,4 +416,28 @@ public class HeadlessDesignerBuilder extends AbstractDesignerPlugin {
 		m_Features = features;
 	}
 	
+	/**
+	 * @return the templateBuildName
+	 */
+	public String getTemplateBuildName() {
+		return templateBuildName;
+	}
+	/**
+	 * @param templateBuildName the templateBuildName to set
+	 */
+	public void setTemplateBuildName(String templateBuildName) {
+		this.templateBuildName = templateBuildName;
+	}
+	/**
+	 * @return the templateBuildVersion
+	 */
+	public String getTemplateBuildVersion() {
+		return templateBuildVersion;
+	}
+	/**
+	 * @param templateBuildVersion the templateBuildVersion to set
+	 */
+	public void setTemplateBuildVersion(String templateBuildVersion) {
+		this.templateBuildVersion = templateBuildVersion;
+	}
 }

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<note class='sharedfield' xmlns='http://www.lotus.com/dxl'>
+	<item name='$TemplateBuildName'>
+		<text>{{TemplateBuildName}}</text>
+	</item>
+	<item name='$TemplateBuildDate'>
+		<datetime>{{TemplateBuildDate}}</datetime>
+	</item>
+	<item name='$TITLE'><text>$TemplateBuild</text></item>
+	<item name='$Info' sign='true'>
+		<rawitemdata type='1'>
+hhgBAIAAAAAAgAAAAQABAP///wAQAAAA
+</rawitemdata>
+	</item>
+	<item name='$Flags'><text/></item>
+	<item name='$TemplateBuild' summary='false' placeholder='true'><text>{{TemplateBuildVersion}}</text></item>
+	<item name='$Fields'><text>$TemplateBuild</text></item>
+	<item name='$Body' summary='true' sign='true'>
+	<rawitemdata type='1'>
+gQKC/1oAAQAAAAAAAAAAAKAFAACgBQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAABAAAAAJSHAAAAAAAAAAAAAAAAAQAAAAQAAACDBAEAhf8IAAEAAArdBgAAiv/+/1AA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4AHgAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAIr/MgCKAAAFADACAAAAAAAAAgEAAAoAAAAAAAAAAA4AAAAAACRU
+ZW1wbGF0ZUJ1aWxkYg4BAIQAAAAAAAAAAADeBgAAiv+F/wgAAQAACg==
+</rawitemdata>
+	</item>
+</note>
+
