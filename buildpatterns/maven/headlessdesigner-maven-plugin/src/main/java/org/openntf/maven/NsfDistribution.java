@@ -16,8 +16,8 @@ public class NsfDistribution extends AbstractDesignerPlugin {
 		getLog().info("TargetDBName    =" + m_TargetDBName);
 		getLog().info("OutputDir     =" + m_TargetDir);
 		if (StringUtils.isEmpty(m_TargetDBName) || m_TargetDBName == null) {
-			getLog().info("NSF Distribution miss some configuration (ddehd.notesdata)");
-			throw new MojoExecutionException("NSF Distribution miss some configuration (ddehd.notesdata)");
+			getLog().info("NSF Distribution is missing required configuration information (ddehd.notesdata)");
+			throw new MojoExecutionException("NSF Distribution is missing required configuration information (ddehd.notesdata)");
 		}
 	}
 
