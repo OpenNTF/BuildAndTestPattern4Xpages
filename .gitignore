@@ -1,1 +1,4 @@
 testpatterns/org.openntf.junit.xsp.parent/target/
+buildpatterns/maven/odp-maven-archetype/.settings/org.sonar.ide.eclipse.core.prefs
+testpatterns/org.openntf.junit.xsp.parent/org.openntf.junit.odp/.project
+testpatterns/org.openntf.junit.xsp.parent/org.openntf.junit.odp/.settings/
