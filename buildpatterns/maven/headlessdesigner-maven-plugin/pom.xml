@@ -3,12 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openntf.maven</groupId>
 	<artifactId>headlessdesigner-maven-plugin</artifactId>
-	<version>1.2.0</version>
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
+	<version>1.3.0</version>
 	<name>Headless Designer Build Plugin</name>
 	<licenses>
 		<license>
@@ -60,6 +55,11 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.3.3</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
 	</dependencies>
 	<packaging>maven-plugin</packaging>
 
@@ -82,7 +82,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.2</version>
+				<version>3.3</version>
 				<configuration>
 					<!-- see http://jira.codehaus.org/browse/MNG-5346 -->
 					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
@@ -109,9 +109,9 @@
 				<version>1.6.3</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>sonatype-nexus-staging</serverId>
+					<serverId>sonatype-nexus-staging-openntf</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
 			</plugin>
 
@@ -164,7 +164,23 @@
 		<url>www.openntf.org</url>
 	</organization>
 	<url>www.openntf.org/maven/org.openntf.maven</url>
-
+	<developers>
+		<developer>
+			<name>Christian Guedemann</name>
+			<organization>WebGate Consulting AG</organization>
+			<roles>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Jesse Gallagher</name>
+			<organization>IKnowSomeGuys</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -215,4 +231,11 @@
 			</build>
 		</profile>
 	</profiles>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-staging-openntf</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<description>The headless designer plugins enables you build XPages Application from the On-Disk-Project, invoking the IBM Domino Designer.</description>
 </project>
