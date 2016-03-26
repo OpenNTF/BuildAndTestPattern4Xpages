@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>junit.xsp.parent</artifactId>
 		<groupId>org.openntf.junit</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.openntf.junit.odp</artifactId>
@@ -13,6 +13,11 @@
 
 	<properties>
 		<ddehd.odpdirectory>${basedir}/on-disk-project</ddehd.odpdirectory>
+		<ddehd.targetdbname>junit4xspdemo.nsf</ddehd.targetdbname>
+		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>		
+		<feature.url>file:///${project.parent.basedir}/org.openntf.junit.xsp.updatesite/target/site</feature.url>
+		<feature.version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}.${maven.build.timestamp}</feature.version>
+		<lic.file>${project.parent.basedir}/LICENSE_HEADER/apacheV2.txt</lic.file>
 	</properties>
 
 	<build>
@@ -20,11 +25,34 @@
 			<plugin>
 				<groupId>org.openntf.maven</groupId>
 				<artifactId>headlessdesigner-maven-plugin</artifactId>
-				<version>1.1.1</version>
+				<version>1.3.0</version>
 				<extensions>true</extensions>
 				<configuration>
+					<templateBuildName>junit4xsp</templateBuildName>
+					<templateBuildVersion>${feature.version}</templateBuildVersion>
+					<features>
+						<feature>
+							<featureId>org.openntf.junit.xsp.feature</featureId>
+							<url>${feature.url}</url>
+							<version>${feature.version}</version>
+						</feature>
+					</features>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>parse-version</id>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

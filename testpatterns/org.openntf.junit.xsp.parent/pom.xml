@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openntf.junit</groupId>
 	<artifactId>junit.xsp.parent</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<tycho-version>0.19.0</tycho-version>
@@ -14,7 +14,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<ddehd.designerexec>${notes-designer}</ddehd.designerexec>
-		<ddehd.targetdbname>${notes-nsf}</ddehd.targetdbname>
 		<ddehd.notesdata>${notes-data}</ddehd.notesdata>
 		<sonar.language>java</sonar.language>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
@@ -302,7 +301,7 @@
 			<id>full</id>
 			<activation>
 				<property>
-					<name>nnotes-designer</name>
+					<name>notes-designer</name>
 				</property>
 			</activation>
 			<modules>
